@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# bash completion for dl-api commandline client
+# bash completion for hook commandline client
 
-_dl_api()
+_hook_cli()
 {
     local root=$(git rev-parse --show-cdup)
 
@@ -17,12 +17,12 @@ _dl_api()
     # contextual completion
     case "$prev" in
       "generate:seed")
-        # TODO: list collections from dl-api here
+        # TODO: list collections from hook here
         COMPREPLY=( $( compgen -W "auth" -- $cur ) )
         return 0
         ;;
       "generate:observer")
-        # TODO: list collections from dl-api here
+        # TODO: list collections from hook here
         COMPREPLY=( $( compgen -W "auth" -- $cur ) )
         return 0
         ;;
@@ -33,24 +33,24 @@ _dl_api()
         ;;
 
       "config:remove")
-        # list configs from dl-api
-        COMPREPLY=( $( compgen -W "$(dl-api config --json | php -r "$php_print_names")" -- $cur ) )
+        # list configs from hook
+        COMPREPLY=( $( compgen -W "$(hook config --json | php -r "$php_print_names")" -- $cur ) )
         return 0
         ;;
 
       "module:upload")
-        COMPREPLY=( $( compgen -W "$(find dl-ext -name *.php)" -- $cur ) )
+        COMPREPLY=( $( compgen -W "$(find hook-ext -name *.php)" -- $cur ) )
         return 0
         ;;
 
       "module:remove")
-        # list modules from dl-api
-        COMPREPLY=( $( compgen -W "$(dl-api modules --json | php -r "$php_print_names")" -- $cur ) )
+        # list modules from hook
+        COMPREPLY=( $( compgen -W "$(hook modules --json | php -r "$php_print_names")" -- $cur ) )
         return 0
         ;;
 
       "db:seed")
-        list="dl-ext/seeds"
+        list="hook-ext/seeds"
         COMPREPLY=( $( compgen -W "$(ls "$root$list" | sed -e 's/\.[a-zA-Z]*$//')" -- $cur ) )
         return 0
         ;;
@@ -103,7 +103,7 @@ _dl_api()
     fi
 
     # complete main commands
-    if [[ "$prev" == "dl-api" ]]; then
+    if [[ "$prev" == "hook" ]]; then
       COMPREPLY=( $(compgen -W "app: apps console config config: db: generate: key: keys module: modules schedule schedule:" -- $cur) )
       return 0
     fi
@@ -115,4 +115,4 @@ _dl_api()
 if [[ -n ${ZSH_VERSION-} ]]; then
   autoload -U +X bashcompinit && bashcompinit
 fi
-complete -F _dl_api -o nospace dl-api
+complete -F _hook_cli -o nospace hook

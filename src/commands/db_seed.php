@@ -15,8 +15,8 @@ return array(
 		foreach(\Client\Utils::glob(Client\Project::root() . 'dl-ext/seeds/' . $seed_file) as $yaml_file) {
 			$collection = basename($yaml_file, '.yaml');
 
-			$yaml = new Symfony\Component\Yaml\Parser();
-			$options = $yaml->parse(file_get_contents($yaml_file));
+			$parser = new Symfony\Component\Yaml\Parser();
+			$options = $parser->parse(file_get_contents($yaml_file));
 
 			if (isset($options['truncate']) && $options['truncate']) {
 				echo "Truncating '{$collection}'... ";

@@ -6,6 +6,9 @@ class Project {
 	private static $config_file;
 	private static $temp_config;
 
+	const CONFIG_FILE = '.hook-config';
+	const DIRECTORY_NAME = 'hook-ext';
+
 	public static function getConfigFile() {
 		return self::root() . self::$config_file;
 	}
@@ -34,7 +37,7 @@ class Project {
 	}
 
 	public static function root() {
-		$scm_list = array('.dl-config', '.git', '_darcs', '.hg', '.bzr', '.svn');
+		$scm_list = array(self::DIRECTORY_NAME, '.git', '_darcs', '.hg', '.bzr', '.svn');
 		$path = getcwd();
 
 		while ($path !== '/') {

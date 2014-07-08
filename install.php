@@ -1,5 +1,5 @@
 <?php
-die('This script is suposed to generate a binary dl-api.phar file.');
+die('This script is suposed to generate a binary hook.phar file.');
 
 ini_set('phar.readonly', 0);
 
@@ -11,7 +11,7 @@ function glob_recursive($pattern, $flags = 0) {
 	return $files;
 }
 
-$phar = new Phar('dl-api.phar');
+$phar = new Phar('hook.phar');
 // foreach(glob_recursive('src/*') as $src) {
 // 	$phar->addFile($src);
 // }
@@ -19,8 +19,8 @@ $phar = new Phar('dl-api.phar');
 // 	$phar->addFile($src);
 // }
 $phar->setSignatureAlgorithm(\Phar::SHA1);
-$phar->addFile('bin/dl-api');
-$phar->setStub( $phar->createDefaultStub('bin/dl-api') );
+$phar->addFile('bin/hook');
+$phar->setStub( $phar->createDefaultStub('bin/hook') );
 
 // $phar->convertToExecutable(Phar::PHAR);
 // $phar->setStub( $phar->createDefaultStub('bootstrap.php') );

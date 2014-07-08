@@ -13,12 +13,11 @@
       evaluateFile = (process.argv[3]);
 
   if (!evaluateFile) {
-    console.log("     _ _                   _                             _       ");
-    console.log("  __| | |       __ _ _ __ (_)   ___ ___  _ __  ___  ___ | | ___  ");
-    console.log(" / _` | |_____ / _` | '_ \\| |  / __/ _ \\| '_ \\/ __|/ _ \\| |/ _ \\ ");
-    console.log("| (_| | |_____| (_| | |_) | | | (_| (_) | | | \\__ \\ (_) | |  __/ ");
-    console.log(" \\__,_|_|      \\__,_| .__/|_|  \\___\\___/|_| |_|___/\\___/|_|\\___| ");
-    console.log("                    |_|                                          ");
+    console.log(" _                 _    ");
+    console.log("| |__   ___   ___ | | __");
+    console.log("| '_ \\ / _ \\ / _ \\| |/ /");
+    console.log("| | | | (_) | (_) |   < ");
+    console.log("|_| |_|\\___/ \\___/|_|\\_\\");
     console.log("");
   }
 
@@ -108,25 +107,25 @@
     config.url = config.endpoint;
     delete config.endpoint;
 
-    var dl = new window.DL.Client(config);
+    var hook = new window.Hook.Client(config);
 
-    var _request = window.DL.Client.prototype.request;
-    window.DL.Client.prototype.request = function(segments, method, data) {
+    var _request = window.Hook.Client.prototype.request;
+    window.Hook.Client.prototype.request = function(segments, method, data) {
       if (typeof(data)==="undefined") { data = {}; }
       data._sync = true;
       return _request.apply(this, arguments);
     }
 
     if (!evaluateFile) {
-      console.log("\rAPI Documentation: http://doubleleft.github.io/dl-api-javascript\n");
+      console.log("\rAPI Documentation: http://doubleleft.github.io/hook-javascript\n");
       console.log("Available variables to hack on:");
-      console.log("\t- dl - DL.Client");
-      console.log("\t- config - .dl-config");
+      console.log("\t- hook - Hook.Client");
+      console.log("\t- config - .hook-config");
       console.log("\t- $ - jQuery 2.1.0");
       console.log("\t- window");
 
       sess = repl.start({
-        prompt: 'dl-api: javascript> ',
+        prompt: 'hook: javascript> ',
         writer: writer,
         ignoreUndefined: true
       });
@@ -135,20 +134,19 @@
       eval(fs.readFileSync(evaluateFile, "utf-8"));
     }
 
-
     //
     // Custom inspecting
     //
-    // window.DL.Collection.prototype.inspect = function() {
+    // window.Hook.Collection.prototype.inspect = function() {
     //   return "[Collection: '" + this.name + "']";
     // };
 
     if (sess) {
       sess.context.window = window;
       sess.context.$ = window.$;
-      sess.context.DL = window.DL;
+      sess.context.Hook = window.Hook;
       sess.context.config = config;
-      sess.context.dl = dl;
+      sess.context.hook = hook;
       sess.context.sess = sess;
     }
 

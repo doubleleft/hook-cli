@@ -1,8 +1,11 @@
-php-api-cli
+hook-cli
 ===
 
+TODO: migrate from `nategood/commando` to `symfony/console`.
 https://github.com/symfony/Console
 
-php-api commandline interface.
+hook commandline interface.
 
-    ./dl-api --help
+```
+hook --help
+```

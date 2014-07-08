@@ -1,0 +1,19 @@
+books:
+  attributes:
+
+  relationships:
+    belongs_to:
+      - authors
+    has_many:
+      - publishers
+
+publishers:
+  relationships:
+    belongs_to: books
+    has_many:
+      - preferred_authors: authors
+
+authors:
+  relationships:
+    has_many:
+      - books

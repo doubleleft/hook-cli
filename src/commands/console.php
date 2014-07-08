@@ -8,7 +8,7 @@ return array(
 
 		$dl_config_path = Client\Project::getConfigFile();
 		if (!file_exists($dl_config_path)) {
-			die("No .dl-config file found at project root.\n");
+			die("No ". Client\Project::CONFIG_FILE ." file found at project root.\n");
 		}
 
 		$descriptors = array(

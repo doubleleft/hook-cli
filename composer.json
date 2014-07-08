@@ -1,7 +1,7 @@
 {
-  "name": "doubleleft/php-api-cli",
-  "description": "The commandline interface for php-api",
-  "keywords": ["php-api", "cli", "console"],
+  "name": "doubleleft/hook-cli",
+  "description": "The commandline interface for hook",
+  "keywords": ["hook", "cli", "console"],
   "license": "MIT",
   "authors": [{
     "name": "Endel Dreyer",
@@ -15,12 +15,13 @@
   },
   "require": {
     "symfony/console": "2.6.*",
+    "nategood/commando": "0.2.*",
     "guzzle/guzzle": "*",
     "symfony/yaml": "2.4.*"
   },
   "require-dev": {
     "phpunit/phpunit": "3.7.*"
   },
-  "bin": ["bin/dl-api"],
+  "bin": ["bin/hook"],
   "minimum-stability": "stable"
 }
