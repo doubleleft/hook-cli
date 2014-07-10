@@ -107,10 +107,10 @@
     config.url = config.endpoint;
     delete config.endpoint;
 
-    var hook = new window.Hook.Client(config);
+    var hook = new window.DL.Client(config);
 
-    var _request = window.Hook.Client.prototype.request;
-    window.Hook.Client.prototype.request = function(segments, method, data) {
+    var _request = window.DL.Client.prototype.request;
+    window.DL.Client.prototype.request = function(segments, method, data) {
       if (typeof(data)==="undefined") { data = {}; }
       data._sync = true;
       return _request.apply(this, arguments);
@@ -119,7 +119,7 @@
     if (!evaluateFile) {
       console.log("\rAPI Documentation: http://doubleleft.github.io/hook-javascript\n");
       console.log("Available variables to hack on:");
-      console.log("\t- hook - Hook.Client");
+      console.log("\t- hook - DL.Client");
       console.log("\t- config - .hook-config");
       console.log("\t- $ - jQuery 2.1.0");
       console.log("\t- window");
@@ -137,7 +137,7 @@
     //
     // Custom inspecting
     //
-    // window.Hook.Collection.prototype.inspect = function() {
+    // window.DL.Collection.prototype.inspect = function() {
     //   return "[Collection: '" + this.name + "']";
     // };
 

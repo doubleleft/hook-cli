@@ -2,6 +2,7 @@
 use Client\Client as Client;
 use Client\Project as Project;
 use Client\Console as Console;
+use Client\Utils as Utils;
 
 return array(
 	'arg0'    => 'module:upload',

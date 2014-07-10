@@ -39,7 +39,7 @@ class Client {
 			// TODO: create Output class for coloring features
 			$url = parse_url(self::$endpoint);
 			Console::error("ERROR {$url['host']}: '" . $data->error . "'" );
-			die($message);
+			die();
 		}
 
 		return $data;
