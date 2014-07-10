@@ -12,4 +12,8 @@ class Console {
 		echo "\033[1;31m{$message}\033[0;39m" . PHP_EOL;
 	}
 
+	public static function readline() {
+		return strtolower(trim(fgets(STDIN)));
+	}
+
 }

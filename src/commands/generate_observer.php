@@ -1,4 +1,5 @@
 <?php
+use Client\Project as Project;
 
 return array(
 	'arg0'    => 'generate:observer',
@@ -10,11 +11,11 @@ return array(
 			die("'collection-name' is required.");
 		}
 
-		$dest = Client\Project::root() . 'dl-ext/observers/';
+		$dest = Project::root(Project::DIRECTORY_NAME) . '/observers/';
 		$dest_file = $dest . $args[1] . '.php';
 		@mkdir($dest, 0777, true);
 
-		$template = file_get_contents(__DIR__ . '/../templates/observer.php');
+		$template = file_get_contents(__DIR__ . '/../../templates/observer.php');
 		$template = preg_replace('/{name}/', ucfirst($args[1]), $template);
 		$template = preg_replace('/{collection}/', $args[1], $template);
 		file_put_contents($dest_file, $template);

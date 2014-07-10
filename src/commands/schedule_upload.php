@@ -1,4 +1,7 @@
 <?php
+use Client\Client as Client;
+use Client\Project as Project;
+use Client\Console as Console;
 
 return array(
 	'arg0'    => 'schedule:upload',
@@ -7,8 +10,8 @@ return array(
 	'run' => function($args) {
 		$module_types = array('observers', 'routes', 'templates');
 
-		$client = new Client\Client();
-		$schedule_file = Client\Project::root() . 'dl-ext/schedule.yaml';
+		$client = new Client();
+		$schedule_file = Project::root(Project::DIRECTORY_NAME) . '/schedule.yaml';
 
 		$uploaded = null;
 		if (file_exists($schedule_file)) {
@@ -18,13 +21,13 @@ return array(
 			echo "Uploading: '{$schedule_file}'" . PHP_EOL;
 			$uploaded = $client->post('apps/tasks', $schedule_data);
 			if ($uploaded->success) {
-				Client\Console::output('Crontab installed successfully.');
+				Console::output('Crontab installed successfully.');
 			} else {
-				Client\Console::error("Error to install crontab.");
+				Console::error("Error to install crontab.");
 			}
 		} else {
-			Client\Console::error("File not found: " . $schedule_file);
-			Client\Console::output('To generate it run: ' . PHP_EOL . "\tdl-api generate:schedule");
+			Console::error("File not found: " . $schedule_file);
+			Console::output('To generate it run: ' . PHP_EOL . "\tdl-api generate:schedule");
 		}
 
 		return $uploaded;

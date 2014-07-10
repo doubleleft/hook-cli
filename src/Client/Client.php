@@ -38,10 +38,7 @@ class Client {
 		if (isset($data->error)) {
 			// TODO: create Output class for coloring features
 			$url = parse_url(self::$endpoint);
-			$message = "\033[1;31m"; // red
-			$message .= "ERROR {$url['host']}: '" . $data->error . "'" ;
-			$message .= "\033[0;39m"; // clear color
-			$message .= PHP_EOL;
+			Console::error("ERROR {$url['host']}: '" . $data->error . "'" );
 			die($message);
 		}
 
@@ -68,5 +65,4 @@ class Client {
 		}
 		return $headers;
 	}
-
 }

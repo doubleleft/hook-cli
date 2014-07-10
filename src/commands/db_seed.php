@@ -1,5 +1,9 @@
 <?php
 
+use Client\Utils as Utils;
+use Client\Client as Client;
+use Client\Project as Project;
+
 return array(
 	'arg0'    => 'db:seed',
 	'command' => 'db:seed [<seed-file>]',
@@ -11,8 +15,8 @@ return array(
 			$seed_file = $args[1] . '.yaml';
 		}
 
-		$client = new Client\Client();
-		foreach(\Client\Utils::glob(Client\Project::root() . 'dl-ext/seeds/' . $seed_file) as $yaml_file) {
+		$client = new Client();
+		foreach(Utils::glob(Project::root(Project::DIRECTORY_NAME) . '/seeds/' . $seed_file) as $yaml_file) {
 			$collection = basename($yaml_file, '.yaml');
 
 			$parser = new Symfony\Component\Yaml\Parser();
@@ -35,7 +39,7 @@ return array(
 					// Look for special data fields
 					foreach($data as $field => $value) {
 						if (preg_match('/\!upload ([^$]+)/', $value, $file)) {
-							$filepath = 'dl-ext/seeds/' . $file[1];
+							$filepath = Project::DIRECTORY_NAME . '/seeds/' . $file[1];
 
 							// stop when file doens't exists
 							if (!file_exists($filepath)) {
@@ -43,7 +47,7 @@ return array(
 								die();
 							}
 
-							$mime_type = Client\Utils::mime_type($filepath);
+							$mime_type = Utils::mime_type($filepath);
 							$data[$field] = 'data:' . $mime_type . ';base64,' . base64_encode(file_get_contents($filepath));
 						}
 					}

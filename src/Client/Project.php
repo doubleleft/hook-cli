@@ -36,7 +36,7 @@ class Project {
 		return (!file_exists($config_file)) ? array() : json_decode(file_get_contents($config_file), true);
 	}
 
-	public static function root() {
+	public static function root($concat='') {
 		$scm_list = array(self::DIRECTORY_NAME, '.git', '_darcs', '.hg', '.bzr', '.svn');
 		$path = getcwd();
 
@@ -45,7 +45,7 @@ class Project {
 
 			foreach($scm_list as $scm) {
 				if (file_exists($path . $scm)) {
-					return $path;
+					return $path . $concat;
 				}
 			}
 
@@ -53,7 +53,7 @@ class Project {
 			$path = dirname($path);
 		}
 
-		return getcwd() . '/';
+		return getcwd() . '/' . $concat;
 	}
 
 }

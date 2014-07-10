@@ -1,4 +1,5 @@
 <?php
+use Client\Client as Client;
 
 return array(
 	'arg0'    => 'key:new',
@@ -6,7 +7,7 @@ return array(
 	'description' => 'Create a new key to application.',
 	'run' => function($args) {
 
-		$client = new Client\Client();
+		$client = new Client();
 		$key = $client->post("apps/keys");
 
 		if (!$args['json']) {

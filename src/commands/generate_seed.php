@@ -1,4 +1,5 @@
 <?php
+use Client\Project as Project;
 
 return array(
 	'arg0'    => 'generate:seed',
@@ -12,11 +13,11 @@ return array(
 
 		$collection = strtolower($args[1]);
 
-		$dest = Client\Project::root() . 'dl-ext/seeds/';
+		$dest = Project::root(Project::DIRECTORY_NAME) . '/seeds/';
 		$dest_file = $dest . $collection . '.yaml';
 		@mkdir($dest, 0777, true);
 
-		$template = file_get_contents(__DIR__ . '/../templates/seed.yaml');
+		$template = file_get_contents(__DIR__ . '/../../templates/seed.yaml');
 		$template = preg_replace('/{name}/', $collection, $template);
 		file_put_contents($dest_file, $template);
 

@@ -1,19 +1,27 @@
-books:
-  attributes:
-
-  relationships:
-    belongs_to:
-      - authors
-    has_many:
-      - publishers
-
-publishers:
-  relationships:
-    belongs_to: books
-    has_many:
-      - preferred_authors: authors
-
-authors:
-  relationships:
-    has_many:
-      - books
+##
+## 'books' schema
+##
+#books:
+#  lock_attributes: true
+#  attributes:
+#    - name: name
+#      type: string
+#    - name: isbn
+#      type: string
+#      unique: true
+#    - name: genre
+#      type: string
+#
+#  relationships:
+#    belongs_to: authors
+#
+##
+## 'authors' schema
+##
+#authors:
+#  attributes:
+#    - name: name
+#      type: string
+#
+#  relationships:
+#    has_many: books

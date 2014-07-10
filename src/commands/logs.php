@@ -1,4 +1,5 @@
 <?php
+use Client\Client as Client;
 
 return array(
 	'arg0'    => 'logs',
@@ -21,7 +22,7 @@ return array(
 			$url .= '?' . urlencode(json_encode($data));
 		}
 
-		$client = new Client\Client();
+		$client = new Client();
 		// $request = $client->request('get', $url);
 
 		$response = $client->request('get', $url)->send()->json();

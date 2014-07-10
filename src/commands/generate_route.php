@@ -1,4 +1,5 @@
 <?php
+use Client\Project as Project;
 
 return array(
 	'arg0'    => 'generate:route',
@@ -22,7 +23,7 @@ return array(
 			$route_path = '/' . $route_path;
 		}
 
-		$dest = Client\Project::root() . 'dl-ext/routes/';
+		$dest = Project::root(Project::DIRECTORY_NAME) . '/routes/';
 		$dest_file = $dest . $route_filename . '.php';
 		@mkdir($dest, 0777, true);
 
@@ -32,7 +33,7 @@ return array(
 			array_push($arguments_list, '$' . $arg);
 		}
 
-		$template = file_get_contents(__DIR__ . '/../templates/route.php');
+		$template = file_get_contents(__DIR__ . '/../../templates/route.php');
 		$template = preg_replace('/{path}/', $route_path, $template);
 		$template = preg_replace('/{method}/', $route_method, $template);
 		$template = preg_replace('/{method_uppercase}/', $route_method_uppercase, $template);

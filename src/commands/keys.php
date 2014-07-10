@@ -1,4 +1,5 @@
 <?php
+use Client\Client as Client;
 
 return array(
 	'arg0'    => 'keys',
@@ -6,7 +7,7 @@ return array(
 	'description' => 'List all application keys.',
 	'run' => function($args) {
 
-		$client = new Client\Client();
+		$client = new Client();
 		$app = $client->get("apps/keys");
 
 		if (!$args['json']) {

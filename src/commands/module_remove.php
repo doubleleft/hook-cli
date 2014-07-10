@@ -1,4 +1,5 @@
 <?php
+use Client\Client as Client;
 
 return array(
 	'arg0'    => 'module:remove',
@@ -11,7 +12,7 @@ return array(
 			die("Error: 'module-name' is required." . PHP_EOL);
 		}
 
-		$client = new Client\Client();
+		$client = new Client();
 		$response = $client->delete('apps/modules', array(
 			'module' => array('name' => $module)
 		));

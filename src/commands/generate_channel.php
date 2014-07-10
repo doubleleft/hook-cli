@@ -1,4 +1,5 @@
 <?php
+use Client\Project as Project;
 
 return array(
 	'arg0'    => 'generate:channel',
@@ -10,11 +11,11 @@ return array(
 			die("'channel-name' is required.");
 		}
 
-		$dest = Client\Project::root() . 'dl-ext/channels/';
+		$dest = Project::root(Project::DIRECTORY_NAME) . '/channels/';
 		$dest_file = $dest . $args[1] . '.php';
 		@mkdir($dest, 0777, true);
 
-		$template = file_get_contents(__DIR__ . '/../templates/channel.php');
+		$template = file_get_contents(__DIR__ . '/../../templates/channel.php');
 		$template = preg_replace('/{name}/', ucfirst($args[1]), $template);
 		$template = preg_replace('/{channel}/', $args[1], $template);
 		file_put_contents($dest_file, $template);

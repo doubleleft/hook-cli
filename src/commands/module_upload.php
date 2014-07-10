@@ -1,4 +1,7 @@
 <?php
+use Client\Client as Client;
+use Client\Project as Project;
+use Client\Console as Console;
 
 return array(
 	'arg0'    => 'module:upload',
@@ -7,8 +10,8 @@ return array(
 	'run' => function($args) {
 		$module_types = array('observers', 'routes', 'templates', 'channels');
 
-		$client = new Client\Client();
-		foreach(Client\Utils::glob(Client\Project::root() . 'dl-ext/**') as $module) {
+		$client = new Client();
+		foreach(Utils::glob(Project::root(Project::DIRECTORY_NAME) . '/**') as $module) {
 
 			if (is_file($module)) {
 				$module_type = basename(dirname($module));
