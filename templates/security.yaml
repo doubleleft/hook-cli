@@ -1,0 +1,10 @@
+# Setup a pepper to generate the encrypted password.
+auth_pepper: {{pepper}}
+
+# Whitelist of allowed host origins
+allowed_origins:
+  - *
+
+collections:
+  auths:
+    allow: *

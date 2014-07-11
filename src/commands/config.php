@@ -1,27 +1,30 @@
 <?php
+use Client\Client as Client;
+use Client\Project as Project;
+use Client\Console as Console;
 
 return array(
 	'arg0'    => 'config',
 	'command' => 'config',
 	'description' => 'List all app configurations',
 	'run' => function($args) {
-		$client = new Client\Client();
+		$client = new Client();
 		$configs = $client->get("apps/configs");
 
-		$project = Client\Project::getConfig();
+		$project = Project::getConfig();
 
 		if (!$args['json']) {
 			foreach($project as $key => $value) {
-				echo $key . ': ' . $value . PHP_EOL;
+				Console::output($key . ': ' . $value);
 			}
-			echo str_repeat('-', 37) . PHP_EOL;
+			Console::output(str_repeat('-', 37));
 			if ($configs) {
 				foreach($configs as $config) {
 					preg_match('/([^$|\n]+)/', $config->value, $value);
-					echo $config->name . ': ' . $value[1] . PHP_EOL;
+					Console::output($config->name . ': ' . $value[1]);
 				}
 			} else {
-				echo "No configurations found for: '{$project['name']}'." . PHP_EOL;
+				Console::output("No configurations found for: '{$project['name']}'.");
 			}
 		}
 

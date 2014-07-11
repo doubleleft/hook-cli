@@ -1,10 +1,20 @@
 <?php
+use Client\Utils as Utils;
+use Client\Console as Console;
+use Client\Project as Project;
 
 return array(
 	'arg0'    => 'config:set',
 	'command' => 'config:set <name=value> [<name=value> ...]',
 	'description' => 'Set a configuration to app.',
 	'run' => function($args) use ($commands) {
+		$config_file = Project::root(Project::DIRECTORY_NAME) . '/config.yaml';
+		$configs = array();
+
+		if (file_exists($config_file)) {
+			$parser = new Symfony\Component\Yaml\Parser();
+			$configs = $parser->parse(file_get_contents($config_file));
+		}
 
 		$configs_to_add = array();
 		foreach($args as $arg) {
@@ -18,7 +28,7 @@ return array(
 				// --------------------------------
 				//
 				if (file_exists($value)) {
-					\Client\Console::output("Reading certificate file..." . PHP_EOL);
+					Console::output("Reading certificate file...");
 
 					$ext = pathinfo($value, PATHINFO_EXTENSION);
 					if ($ext == 'p12') {
@@ -27,7 +37,7 @@ return array(
 						if ($worked) {
 							$value = $results['cert'] . $results['pkey'];
 						} else {
-							\Client\Console::error(openssl_error_string());
+							Console::error(openssl_error_string());
 						}
 					} else if ($ext == 'pem') {
 						$value = file_get_contents($value);
@@ -41,15 +51,13 @@ return array(
 			}
 		}
 
-		$client = new Client\Client();
-		$configs = $client->post("apps/configs", array(
-			'configs' => $configs_to_add
-		));
+		foreach($configs_to_add as $config) {
+			Utils::array_set($configs, $config['name'], $config['value']);
+		}
 
-		// Run 'config' command after config:add
-		$commands['config']['run']($args);
+		$dumper = new Symfony\Component\Yaml\Dumper();
+		file_put_contents($config_file, str_replace("  ", " ", $dumper->dump($configs, 10)));
+
+		Console::output("Written successfully at: '{$config_file}'");
 	}
 );
-
-
-
