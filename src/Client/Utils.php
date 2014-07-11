@@ -12,6 +12,15 @@ class Utils {
 		return $files;
 	}
 
+	public static function array_set(&$array, $keys, $value) {
+		$keys = preg_split("/\./", $keys);
+		$current = &$array;
+		foreach($keys as $key) {
+			$current = &$current[$key];
+		}
+		$current = $value;
+	}
+
 	public static function mime_type($filename) {
 		$mime_types = array(
 			'txt' => 'text/plain',
