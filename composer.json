@@ -14,10 +14,10 @@
     }
   },
   "require": {
-    "symfony/console": "2.6.*",
     "nategood/commando": "0.2.*",
     "guzzle/guzzle": "*",
-    "symfony/yaml": "2.4.*"
+    "symfony/yaml": "2.4.*",
+    "nesbot/carbon": "1.*"
   },
   "require-dev": {
     "phpunit/phpunit": "3.7.*"

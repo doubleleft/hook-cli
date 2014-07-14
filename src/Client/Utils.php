@@ -12,6 +12,17 @@ class Utils {
 		return $files;
 	}
 
+	public static function check_php_syntax($file_path) {
+		// Check for syntax problems before uploading it.
+		$lint_output = null;
+		$lint_return_code = null;
+		exec('php --syntax-check ' . $file_path, $lint_output, $lint_return_code);
+		if ($lint_return_code !== 0) {
+			Console::error($lint_output[0]);
+			die();
+		}
+	}
+
 	public static function array_set(&$array, $keys, $value) {
 		$keys = preg_split("/\./", $keys);
 		$current = &$array;
