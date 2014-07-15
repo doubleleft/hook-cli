@@ -3,9 +3,10 @@
 namespace Client;
 
 class Client {
-	public static $endpoint = 'http://dl-api.ddll.co/';
+	// public static $endpoint = 'http://dl-api.ddll.co/';
 	// public static $endpoint = 'http://api.2d.cx';
 	// public static $endpoint = 'http://dl-api.dev/api/index.php/';
+	public static $endpoint = 'http://hook.dev:58054/index.php/';
 	public static $debug = false;
 
 	public static function setEndpoint($endpoint) {

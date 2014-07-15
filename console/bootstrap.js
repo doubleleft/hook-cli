@@ -59,7 +59,6 @@
 
       // Print table for arrays
       if (typeof(data)==="object" && data.length && data.length > 0) {
-        delete data[0].app_id;
 
         if (!options.timestamps) {
           delete data[0].created_at;
@@ -70,7 +69,6 @@
             table = new Table({ head: keys });
 
         for (var i=0; i < data.length; i++) {
-          delete data[i].app_id;
 
           if (!options.timestamps) {
             delete data[i].created_at;
@@ -98,15 +96,7 @@
         $ = require('jquery')(window),
         config = JSON.parse(fs.readFileSync(process.argv[2]));
 
-    //
-    // TODO: always use the same coding style for this
-    //
-    config.appId = config.app_id;
-    delete config.app_id;
-
-    config.url = config.endpoint;
-    delete config.endpoint;
-
+    // Create browser client
     var hook = new window.DL.Client(config);
 
     var _request = window.DL.Client.prototype.request;
