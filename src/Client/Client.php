@@ -59,10 +59,13 @@ class Client {
 			'Content-Type' => 'application/json',
 			'X-Public-Key' => urlencode(file_get_contents($_SERVER['HOME'] . '/.ssh/id_rsa.pub'))
 		);
+
 		if (!empty($config)) {
 			$headers['X-App-Id'] = $config['app_id'];
 			$headers['X-App-Key'] = $config['key'];
 		}
+
+		$headers['User-Agent'] = 'hook-cli';
 		return $headers;
 	}
 }
