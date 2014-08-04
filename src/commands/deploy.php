@@ -24,6 +24,7 @@ return array(
 				if (!is_file($module)) {
 					continue;
 				}
+
 				if (!isset($local_modules[ $module_type ])) {
 					$local_modules[ $module_type ] = array();
 				}
@@ -64,16 +65,15 @@ return array(
 		}
 
 		// remaining local modules will be uploaded
-		foreach($local_modules as $type => $module) {
-			if (empty($module)) {
-				continue;
+		foreach($local_modules as $type => $modules) {
+			if (empty($modules)) { continue; }
+
+			foreach($modules as $name => $updated_at) {
+				$module_file = $root_directory . '/' . $type . '/' . $name;
+				$module_contents = file_get_contents($module_file);
+				Utils::check_php_syntax($module_file);
+				$module_sync['upload'][$type][$name] = array($module_contents, $updated_at);
 			}
-			$name = key($module);
-			$updated_at = current($module);
-			$module_file = $root_directory . '/' . $type . '/' . $name;
-			$module_contents = file_get_contents($module_file);
-			Utils::check_php_syntax($module_file);
-			$module_sync['upload'][$type][$name] = array($module_contents, $updated_at);
 		}
 
 		$yaml_parser = new Symfony\Component\Yaml\Parser();
