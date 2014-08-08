@@ -28,8 +28,11 @@ return array(
 		}
 
 		// format schema dump before save
-		$schema_dump = str_replace('  ', ' ', $yaml->dump(json_decode(json_encode($cached_schema), true), 3));
-		$schema_dump = preg_replace('/^([a-z0-9_]+):\n/m', "\n\$0", $schema_dump);
+		$schema_dump = "";
+		if (!empty($cached_schema)) {
+			$schema_dump = str_replace('  ', ' ', $yaml->dump(json_decode(json_encode($cached_schema), true), 3));
+			$schema_dump = preg_replace('/^([a-z0-9_]+):\n/m', "\n\$0", $schema_dump);
+		}
 		file_put_contents($dest, $schema_dump . file_get_contents(__DIR__ . '/../../templates/schema.yaml'));
 
 		echo "Schema dumped at '{$dest}'." . PHP_EOL;
