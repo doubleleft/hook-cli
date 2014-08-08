@@ -76,62 +76,17 @@ return array(
 			}
 		}
 
-		$yaml_parser = new Symfony\Component\Yaml\Parser();
-
-		// get schedule
-		$schedule = array();
-		$schedule_file = $root_directory . '/schedule.yaml';
-		if (file_exists($schedule_file)) {
-			try {
-				$schedule = $yaml_parser->parse(file_get_contents($schedule_file));
-			} catch (Symfony\Component\Yaml\Exception\ParseException $e) {
-				Console::error("Parse error on 'schedule.yaml': " . $e->getMessage());
-				die();
-			}
-		}
-
-		// get schema
-		$schema = array();
-		$schema_file = $root_directory . '/schema.yaml';
-		if (file_exists($schema_file)) {
-			try {
-				$schema = $yaml_parser->parse(file_get_contents($schema_file));
-			} catch (Symfony\Component\Yaml\Exception\ParseException $e) {
-				Console::error("Parse error on 'schema.yaml': " . $e->getMessage());
-				die();
-			}
-		}
-
-		// get config
-		$config = array();
-		$config_file = $root_directory . '/config.yaml';
-		if (file_exists($config_file)) {
-			try {
-				$config = $yaml_parser->parse(file_get_contents($config_file));
-			} catch (Symfony\Component\Yaml\Exception\ParseException $e) {
-				Console::error("Parse error on 'config.yaml': " . $e->getMessage());
-				die();
-			}
-		}
-
-		// get security
-		$security = array();
-		$security_file = $root_directory . '/security.yaml';
-		if (file_exists($security_file)) {
-			try {
-				$security = $yaml_parser->parse(file_get_contents($security_file));
-			} catch (Symfony\Component\Yaml\Exception\ParseException $e) {
-				Console::error("Parse error on 'security.yaml': " . $e->getMessage());
-				die();
-			}
-		}
+		// Only upload packages if local file differs from deployed
+		$packages = Utils::parse_yaml($root_directory . '/packages.yaml');
+		$packages = (((array) $deployed->packages) != $packages) ? $packages : array();
 
 		$stats = $client->post('apps/deploy', array(
 			'modules' => $module_sync,
-			'schema' => $schema,
-			'schedule' => $schedule,
-			'config' => $config,
-			'security' => $security
+			'schema' => Utils::parse_yaml($root_directory . '/schema.yaml'),
+			'schedule' => Utils::parse_yaml($root_directory . '/schedule.yaml'),
+			'config' => Utils::parse_yaml($root_directory . '/config.yaml'),
+			'security' => Utils::parse_yaml($root_directory . '/security.yaml'),
+			'packages' => $packages
 		));
 
 		if (isset($stats->error)) {
@@ -145,5 +100,7 @@ return array(
 		if ($stats->modules->removed > 0) { Console::output($stats->modules->removed . " module(s) removed."); }
 		if ($stats->modules->updated > 0) { Console::output($stats->modules->updated . " module(s) updated."); }
 		if ($stats->modules->uploaded > 0) { Console::output($stats->modules->uploaded . " module(s) uploaded."); }
+
+		if ($stats->packages > 0) { Console::output("Packages updated successfully."); }
 	}
 );

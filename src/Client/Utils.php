@@ -23,6 +23,25 @@ class Utils {
 		}
 	}
 
+	public static function parse_yaml($file_path) {
+		$yaml_parser = new \Symfony\Component\Yaml\Parser();
+		$data = array();
+
+		if (file_exists($file_path)) {
+			try {
+				$parsed = $yaml_parser->parse(file_get_contents($file_path));
+				if (is_array($parsed)) {
+					$data = $parsed;
+				}
+			} catch (Symfony\Component\Yaml\Exception\ParseException $e) {
+				Console::error("Parse error on '" . basename($file_path) . "': " . $e->getMessage());
+				die();
+			}
+		}
+
+		return $data;
+	}
+
 	public static function array_set(&$array, $keys, $value) {
 		$keys = preg_split("/\./", $keys);
 		$current = &$array;
