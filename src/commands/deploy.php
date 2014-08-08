@@ -12,6 +12,8 @@ return array(
 	'run' => function($args) use ($commands) {
 
 		$client = new Client();
+
+		Console::loading_output("Retrieving remote data...");
 		$deployed = $client->get('apps/deploy');
 
 		$root_directory = Project::root(Project::DIRECTORY_NAME);
@@ -76,17 +78,14 @@ return array(
 			}
 		}
 
-		// Only upload packages if local file differs from deployed
-		$packages = Utils::parse_yaml($root_directory . '/packages.yaml');
-		$packages = (((array) $deployed->packages) != $packages) ? $packages : array();
-
+		Console::loading_output("Deploying...");
 		$stats = $client->post('apps/deploy', array(
 			'modules' => $module_sync,
 			'schema' => Utils::parse_yaml($root_directory . '/schema.yaml'),
 			'schedule' => Utils::parse_yaml($root_directory . '/schedule.yaml'),
 			'config' => Utils::parse_yaml($root_directory . '/config.yaml'),
 			'security' => Utils::parse_yaml($root_directory . '/security.yaml'),
-			'packages' => $packages
+			'packages' => Utils::parse_yaml($root_directory . '/packages.yaml')
 		));
 
 		if (isset($stats->error)) {
@@ -101,6 +100,6 @@ return array(
 		if ($stats->modules->updated > 0) { Console::output($stats->modules->updated . " module(s) updated."); }
 		if ($stats->modules->uploaded > 0) { Console::output($stats->modules->uploaded . " module(s) uploaded."); }
 
-		if ($stats->packages > 0) { Console::output("Packages updated successfully."); }
+		if (!empty($stats->packages)) { Console::output("\nPackages:\n\t" . preg_replace("/\\n/", "\n\t", $stats->packages)); }
 	}
 );

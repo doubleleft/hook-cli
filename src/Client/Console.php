@@ -3,6 +3,7 @@
 namespace Client;
 
 class Console {
+	protected static $temp_output_length = 0;
 
 	/**
 	 * Output some message on terminal.
@@ -10,6 +11,16 @@ class Console {
 	 */
 	public static function output($message) {
 		echo $message . PHP_EOL;
+	}
+
+	public static function loading_output($message) {
+		$message_length = strlen($message);
+
+		if ($message_length > static::$temp_output_length) {
+			static::$temp_output_length = $message_length;
+		}
+
+		echo $message . str_repeat(" ", 20) . str_repeat("\r", static::$temp_output_length);
 	}
 
 	/**
