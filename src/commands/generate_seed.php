@@ -7,8 +7,9 @@ return array(
 	'description' => 'Generate seed template.',
 	'run' => function($args) use ($commands) {
 
-		if (!isset($args[1])) {
-			die("'collection-name' is required.");
+		if (strlen($args[1]) == 0) {
+			Client\Console::error("You must specify a collection name for seeding.");
+			die();
 		}
 
 		$collection = strtolower($args[1]);

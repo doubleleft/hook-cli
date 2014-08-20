@@ -7,8 +7,9 @@ return array(
 	'description' => 'Generate HTML template.',
 	'run' => function($args) use ($commands) {
 
-		if (!isset($args[1])) {
-			die("'template-name' is required.");
+		if (strlen($args[1]) == 0) {
+			Client\Console::error("You must specify a template name.");
+			die();
 		}
 
 		$template_name = basename($args[1], '.html');

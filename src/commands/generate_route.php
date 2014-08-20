@@ -7,8 +7,9 @@ return array(
 	'description' => 'Generate a custom route for the application.',
 	'run' => function($args) use ($commands) {
 
-		if (!$args[1]) {
-			die("'path' is required.");
+		if (strlen($args[1]) == 0) {
+			Client\Console::error("You must specify a path.");
+			die();
 		}
 
 		$route_path = strtolower($args[1]);

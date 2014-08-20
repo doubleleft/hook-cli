@@ -7,8 +7,9 @@ return array(
 	'description' => 'Generate custom channel class.',
 	'run' => function($args) use ($commands) {
 
-		if (!isset($args[1])) {
-			die("'channel-name' is required.");
+		if (strlen($args[1]) == 0) {
+			Client\Console::error("You must specify a channel name.");
+			die();
 		}
 
 		$dest = Project::root(Project::DIRECTORY_NAME) . '/channels/';

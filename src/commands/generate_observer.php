@@ -7,8 +7,9 @@ return array(
 	'description' => 'Generate observer class for collection events.',
 	'run' => function($args) use ($commands) {
 
-		if (!isset($args[1])) {
-			die("'collection-name' is required.");
+		if (strlen($args[1]) == 0) {
+			Client\Console::error("You must specify a collection name.");
+			die();
 		}
 
 		$dest = Project::root(Project::DIRECTORY_NAME) . '/observers/';
