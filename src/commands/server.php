@@ -13,6 +13,6 @@ return array(
 		);
 
 		$bind = $args[1] ?: 'localhost:4665';
-		$process = proc_open("php -S {$bind} " . Project::root() . '/index.php', $descriptors, $pipes);
+		$process = proc_open("php -S {$bind} -t " . Project::root() . '/public', $descriptors, $pipes);
 	}
 );
