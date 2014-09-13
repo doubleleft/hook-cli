@@ -27,7 +27,7 @@ return array(
 			}
 		} else {
 			Console::error("File not found: " . $schedule_file);
-			Console::output('To generate it run: ' . PHP_EOL . "\tdl-api generate:schedule");
+			Console::output('To generate it run: ' . PHP_EOL . "\thook generate:schedule");
 		}
 
 		return $uploaded;

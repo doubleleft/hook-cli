@@ -1,7 +1,7 @@
 {
-  "name": "dl-api-console",
+  "name": "hook-cli",
   "version": "0.1.0",
-  "description": "interactive console for dl-api",
+  "description": "interactive console for hook",
   "main": "bootstrap.js",
   "dependencies": {
     "cli-table": "~0.3.0",
@@ -17,15 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:doubleleft/dl-api.git"
+    "url": "git@github.com:doubleleft/hook-cli.git"
   },
   "keywords": [
-    "dl-api",
-    "interactive",
-    "console"
+    "hook",
+    "cli"
   ],
   "author": "Endel Dreyer",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/doubleleft/dl-api/issues"
   }

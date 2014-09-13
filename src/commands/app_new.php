@@ -22,8 +22,8 @@ return array(
 		));
 
 		if (!$args['json']) {
-			echo "App: {$app->name}" . PHP_EOL;
-			echo "Application keys:" . PHP_EOL;
+			echo "Application: {$app->name}" . PHP_EOL;
+			echo "Keys:" . PHP_EOL;
 			foreach($app->keys as $key) {
 				echo "{" . PHP_EOL;
 				echo "\tapp_id: {$key->app_id}" . PHP_EOL;
