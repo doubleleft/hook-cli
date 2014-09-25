@@ -2,10 +2,7 @@
 /**
  * {method_uppercase} {path}
  */
-$app->{method}('{path}', function({arguments}) use ($app)
+Router::{method}('{path}', function({arguments})
 {
-    //
-    // do something
-    //
-    $app->content = array('success' => true);
+    return $this->json(array('success' => true));
 });

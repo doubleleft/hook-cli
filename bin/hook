@@ -27,6 +27,11 @@ $cli->option('v')
   ->describedAs('Show CLI version.')
   ->boolean();
 
+$cli->option('javascript')
+  ->aka('js')
+  ->describedAs('Generate JavaScript code. (generate:channel, generate:route and generate:observer)')
+  ->boolean();
+
 $cli->option('j')
   ->aka('json')
   ->describedAs('JSON output. Useful to automate/integrate CLI workflow.')
@@ -44,6 +49,7 @@ $cli->option('e')
 $cli->option('c')
   ->aka('config')
   ->describedAs('Alternative config file path');
+
 
 /**
  * command-specific options

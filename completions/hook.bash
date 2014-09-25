@@ -21,6 +21,7 @@ _hook_cli()
         COMPREPLY=( $( compgen -W "auth" -- $cur ) )
         return 0
         ;;
+
       "generate:observer")
         # TODO: list collections from hook here
         COMPREPLY=( $( compgen -W "auth" -- $cur ) )
@@ -65,12 +66,17 @@ _hook_cli()
         ;;
 
       "config")
-        COMPREPLY=( $( compgen -W "set remove" -- $second ) )
+        COMPREPLY=( $( compgen -W "set" -- $second ) )
+        return 0
+        ;;
+
+      "cache")
+        COMPREPLY=( $( compgen -W "clear" -- $second ) )
         return 0
         ;;
 
       "generate")
-        COMPREPLY=( $( compgen -W "observer route schedule seed template channel" -- $second ) )
+        COMPREPLY=( $( compgen -W "observer route schedule schema seed template channel" -- $second ) )
         return 0
         ;;
 
@@ -98,13 +104,13 @@ _hook_cli()
 
     # complete options
     if [[ "$cur" == -* ]]; then
-      COMPREPLY=( $( compgen -W "--app --config --debug --endpoint --help --json --version" -- $cur ) )
+      COMPREPLY=( $( compgen -W "--app --config --debug --endpoint --help --json --javascript --version" -- $cur ) )
       return 0
     fi
 
     # complete main commands
     if [[ "$prev" == "hook" ]]; then
-      COMPREPLY=( $(compgen -W "app: apps console config config: db: generate: key: keys module: modules schedule schedule:" -- $cur) )
+      COMPREPLY=( $(compgen -W "app: apps cache: console config config: db: deploy generate: key: keys module: modules schedule schedule:" -- $cur) )
       return 0
     fi
 }

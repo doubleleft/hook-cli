@@ -12,6 +12,8 @@ return array(
 			die();
 		}
 
+		$extension = ($args['javascript']) ? '.js' : '.php';
+
 		$route_path = strtolower($args[1]);
 		$route_method = strtolower($args[2] ?: 'get');
 		$route_method_uppercase = strtoupper($route_method);
@@ -25,7 +27,7 @@ return array(
 		}
 
 		$dest = Project::root(Project::DIRECTORY_NAME) . '/routes/';
-		$dest_file = $dest . $route_filename . '.php';
+		$dest_file = $dest . $route_filename . $extension;
 		@mkdir($dest, 0777, true);
 
 		$arguments_list = array();
@@ -34,7 +36,7 @@ return array(
 			array_push($arguments_list, '$' . $arg);
 		}
 
-		$template = file_get_contents(__DIR__ . '/../../templates/route.php');
+		$template = file_get_contents(__DIR__ . '/../../templates/route' . $extension);
 		$template = preg_replace('/{path}/', $route_path, $template);
 		$template = preg_replace('/{method}/', $route_method, $template);
 		$template = preg_replace('/{method_uppercase}/', $route_method_uppercase, $template);

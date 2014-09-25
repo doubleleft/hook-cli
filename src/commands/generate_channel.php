@@ -12,11 +12,13 @@ return array(
 			die();
 		}
 
+		$extension = ($args['javascript']) ? '.js' : '.php';
+
 		$dest = Project::root(Project::DIRECTORY_NAME) . '/channels/';
-		$dest_file = $dest . $args[1] . '.php';
+		$dest_file = $dest . $args[1] . $extension;
 		@mkdir($dest, 0777, true);
 
-		$template = file_get_contents(__DIR__ . '/../../templates/channel.php');
+		$template = file_get_contents(__DIR__ . '/../../templates/channel' . $extension);
 		$template = preg_replace('/{name}/', ucfirst($args[1]), $template);
 		$template = preg_replace('/{channel}/', $args[1], $template);
 		file_put_contents($dest_file, $template);
