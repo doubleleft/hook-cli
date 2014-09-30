@@ -17,6 +17,7 @@ return array(
 		$deployed = $client->get('apps/deploy');
 
 		$root_directory = Project::root(Project::DIRECTORY_NAME);
+		$js_converted_modules = array();
 
 		// modules
 		$local_modules = array();
@@ -25,6 +26,27 @@ return array(
 			foreach(Utils::glob($root_directory . '/' . $module_type . '/*') as $module) {
 				if (!is_file($module)) {
 					continue;
+				}
+
+				$extension = pathinfo($module , PATHINFO_EXTENSION);
+				if ($extension == "js") {
+					$javascript_module = $module;
+					$module = preg_replace('/\.js$/', '.php', $module);;
+					array_push($js_converted_modules, $module); // keep track for removal
+
+					// module may already exists due error on previous upload.
+					// ask user to prevent overwriting some manually added .php file
+					if (file_exists($module)) {
+						Console::output("Module '".basename($module)."' already exists.\nDo you want to overwrite with converted '".basename($javascript_module)."' version?\n(y/n)");
+						$handle = popen("read; echo \$REPLY", "r");
+						$input = strtolower(trim(fgets($handle, 100)));
+						if ($input!=="y") {
+							Console::error("Deploy aborted.");
+							die();
+						}
+					}
+
+					exec("js2php $javascript_module > $module");
 				}
 
 				if (!isset($local_modules[ $module_type ])) {
@@ -87,6 +109,13 @@ return array(
 			'security' => Utils::parse_yaml($root_directory . '/security.yaml'),
 			'packages' => Utils::parse_yaml($root_directory . '/packages.yaml')
 		));
+
+		// remove auto-generated PHP files
+		if (count($js_converted_modules) > 0) {
+			foreach($js_converted_modules as $module) {
+				unlink($module);
+			}
+		}
 
 		if (isset($stats->error)) {
 			Console::error("Can't deploy: ". $stats->error);
