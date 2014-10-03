@@ -1,0 +1,3 @@
+# Application key-value configs
+email:
+  from: no-reply@domain.com
