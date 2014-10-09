@@ -22,7 +22,7 @@ return array(
 		));
 
 		// Generate security file
-		$dest = Project::root(Project::DIRECTORY_NAME) . '/';
+		$dest = Client\Project::root(Client\Project::DIRECTORY_NAME) . '/';
 		$dest_file = $dest . 'security.yaml';
 		@mkdir($dest, 0777, true);
 
