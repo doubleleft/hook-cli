@@ -3,7 +3,7 @@
 
 # Whitelist of allowed host origins
 allowed_origins:
-  - *
+  - '*'
 
 # collection permissions
 collections:
