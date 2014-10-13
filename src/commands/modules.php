@@ -12,7 +12,6 @@ return array(
 		$client = new Client();
 		$modules = $client->get("apps/modules");
 
-
 		if (!$args['json']) {
 			if ($modules) {
 				echo "Modules: " . PHP_EOL;

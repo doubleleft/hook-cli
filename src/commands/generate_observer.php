@@ -7,9 +7,8 @@ return array(
 	'description' => 'Generate observer class for collection events.',
 	'run' => function($args) use ($commands) {
 
-		if (strlen($args[1]) == 0) {
-			Client\Console::error("You must specify a collection name.");
-			die();
+		if (!$args[1]) {
+			throw new Exception("You must specify a collection name.");
 		}
 
 		$extension = ($args['javascript']) ? '.js' : '.php';

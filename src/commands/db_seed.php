@@ -43,8 +43,7 @@ return array(
 
 							// stop when file doens't exists
 							if (!file_exists($filepath)) {
-								Client\Console::error("File not found: '{$filepath}'");
-								die();
+								throw new Exception("File not found: '{$filepath}'");
 							}
 
 							$mime_type = Utils::mime_type($filepath);

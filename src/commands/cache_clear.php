@@ -14,7 +14,7 @@ return array(
 		if ($response->success) {
 			Console::output("Cache cleared successfully.");
 		} else {
-			Console::error("Some error ocurred when clearing the cache.");
+			throw new Exception("Some error ocurred when clearing the cache.");
 		}
 
 	}

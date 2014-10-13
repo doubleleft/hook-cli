@@ -6,8 +6,12 @@ return array(
 	'description' => 'Create a new application.',
 	'run' => function($args) {
 
-		if (!isset($args[1])) {
-			die("'application-name' is required.");
+		if (!$args[1]) {
+			throw new Exception("'application-name' is required.");
+		}
+
+		if (!$args['endpoint']) {
+			throw new Exception("'endpoint' is required.");
 		}
 
 		$client = new Client\Client();

@@ -15,7 +15,7 @@
   },
   "require": {
     "nategood/commando": "0.2.*",
-    "guzzle/guzzle": "*",
+    "guzzlehttp/guzzle": "4.2.*",
     "symfony/yaml": "2.4.*",
     "nesbot/carbon": "1.*"
   },

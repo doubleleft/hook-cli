@@ -8,8 +8,7 @@ return array(
 	'run' => function($args) use ($commands) {
 
 		if (strlen($args[1]) == 0) {
-			Client\Console::error("You must specify a channel name.");
-			die();
+			throw new Exception("You must specify a channel name.");
 		}
 
 		$extension = ($args['javascript']) ? '.js' : '.php';

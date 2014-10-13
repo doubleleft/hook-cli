@@ -7,9 +7,8 @@ return array(
 	'description' => 'Generate a custom route for the application.',
 	'run' => function($args) use ($commands) {
 
-		if (strlen($args[1]) == 0) {
-			Client\Console::error("You must specify a path.");
-			die();
+		if (!$args[1]) {
+			throw new Exception("You must specify a path.");
 		}
 
 		$extension = ($args['javascript']) ? '.js' : '.php';

@@ -41,8 +41,7 @@ return array(
 						$handle = popen("read; echo \$REPLY", "r");
 						$input = strtolower(trim(fgets($handle, 100)));
 						if ($input!=="y") {
-							Console::error("Deploy aborted.");
-							die();
+							throw new Exception("Deploy aborted.");
 						}
 					}
 
@@ -118,8 +117,7 @@ return array(
 		}
 
 		if (isset($stats->error)) {
-			Console::error("Can't deploy: ". $stats->error);
-			die();
+			throw new Exception("Can't deploy: ". $stats->error);
 		}
 
 		if ($stats->schedule) { Console::output("schedule updated."); }

@@ -6,10 +6,10 @@ return array(
 	'command' => 'module:remove <module-name>',
 	'description' => 'Remove a module from application',
 	'run' => function($args) {
-		$module = (isset($args['1'])) ? $args['1'] : false;
+		$module = $args['1'];
 
 		if (!$module) {
-			die("Error: 'module-name' is required." . PHP_EOL);
+			throw new Exception("Error: 'module-name' is required.");
 		}
 
 		$client = new Client();

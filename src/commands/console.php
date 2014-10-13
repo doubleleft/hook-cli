@@ -8,7 +8,7 @@ return array(
 
 		$dl_config_path = Client\Project::getConfigFile();
 		if (!file_exists($dl_config_path)) {
-			die("No ". Client\Project::CONFIG_FILE ." file found at project root.\n");
+			throw new Exception("No ". Client\Project::CONFIG_FILE ." file found at project root.\n");
 		}
 
 		$descriptors = array(

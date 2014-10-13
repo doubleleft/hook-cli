@@ -22,8 +22,7 @@ return array(
 				"Overwrite? [y/n]");
 			$overwrite = (Console::readline()) == 'y';
 			if (!$overwrite) {
-				Console::output("Aborted.");
-				die();
+				throw new Exception("Aborted.");
 			}
 		}
 
