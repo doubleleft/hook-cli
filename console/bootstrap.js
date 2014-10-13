@@ -24,7 +24,7 @@
   process.stdout.write("Loading...");
 
   // first argument can be html string, filename, or url
-  jsdom.env(html, ["http://dl-api.ddll.co/dist/dl.js"], function (errors, window) {
+  jsdom.env(html, ["http://hook.ddll.co/dist/hook.js"], function (errors, window) {
 
     // Define browser features
     // -----------------------
@@ -97,10 +97,10 @@
         config = JSON.parse(fs.readFileSync(process.argv[2]));
 
     // Create browser client
-    var hook = new window.DL.Client(config);
+    var hook = new window.Hook.Client(config);
 
-    var _request = window.DL.Client.prototype.request;
-    window.DL.Client.prototype.request = function(segments, method, data) {
+    var _request = window.Hook.Client.prototype.request;
+    window.Hook.Client.prototype.request = function(segments, method, data) {
       if (typeof(data)==="undefined") { data = {}; }
       data._sync = true;
       return _request.apply(this, arguments);
@@ -109,7 +109,7 @@
     if (!evaluateFile) {
       console.log("\rAPI Documentation: http://doubleleft.github.io/hook-javascript\n");
       console.log("Available variables to hack on:");
-      console.log("\t- hook - DL.Client");
+      console.log("\t- hook - Hook.Client");
       console.log("\t- config - .hook-config");
       console.log("\t- $ - jQuery 2.1.0");
       console.log("\t- window");
@@ -127,7 +127,7 @@
     //
     // Custom inspecting
     //
-    // window.DL.Collection.prototype.inspect = function() {
+    // window.Hook.Collection.prototype.inspect = function() {
     //   return "[Collection: '" + this.name + "']";
     // };
 
