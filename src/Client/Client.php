@@ -71,12 +71,22 @@ class Client {
 
 	protected function guzzleException($e) {
 		$response = $e->getResponse();
-		$body = $response->getBody();
 
-		$error = "bad response.\n\n";
-		$data = json_decode($body);
+		$data = null;
+		$body = null;
 
-		if (static::$debug && (!$data || !isset($data->trace))) {
+		if (!$response) {
+			$error = "bad endpoint.";
+		} else {
+			$error = "bad response.";
+
+			$body = $response->getBody();
+			$data = json_decode($body);
+		}
+
+		$error .= "\n";
+
+		if ($body && static::$debug && (!$data || !isset($data->trace))) {
 			$error .= "Response:\n" . $body;
 		}
 
@@ -88,7 +98,6 @@ class Client {
 			if (static::$debug && $data->trace) {
 				$error .= "\n\nStack trace:\n" . $data->trace;
 			}
-
 
 		} else {
 			$error .= "Please check if it is accessible: " . static::getEndpoint();
