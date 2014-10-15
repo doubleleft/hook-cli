@@ -27,12 +27,16 @@ return array(
 
 		// Generate security file
 		$dest = Client\Project::root(Client\Project::DIRECTORY_NAME) . '/';
-		$dest_file = $dest . 'security.yaml';
 		@mkdir($dest, 0777, true);
 
-		$template = file_get_contents(__DIR__ . '/../../templates/security.yaml');
-		$template = preg_replace('/{pepper}/', sha1(uniqid(true)), $template);
-		file_put_contents($dest_file, $template);
+		$default_config_files = array('security.yaml', 'packages.yaml');
+		foreach($default_config_files as $config_file) {
+			$dest_file = $dest . $config_file;
+
+			$template = file_get_contents(__DIR__ . '/../../templates/'. $config_file);
+			$template = preg_replace('/{pepper}/', sha1(uniqid(true)), $template);
+			file_put_contents($dest_file, $template);
+		}
 
 		if (!$args['json']) {
 			echo "Application: {$app->name}" . PHP_EOL;

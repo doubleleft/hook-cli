@@ -8,4 +8,4 @@ allowed_origins:
 # collection permissions
 collections:
   auths:
-    allow: *
+    allow: '*'

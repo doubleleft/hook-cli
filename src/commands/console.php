@@ -6,8 +6,8 @@ return array(
 	'description' => 'Start interactive console, or run filename.',
 	'run' => function($args) use ($commands) {
 
-		$dl_config_path = Client\Project::getConfigFile();
-		if (!file_exists($dl_config_path)) {
+		$config_path = Client\Project::getConfigFile();
+		if (!file_exists($config_path)) {
 			throw new Exception("No ". Client\Project::CONFIG_FILE ." file found at project root.\n");
 		}
 
@@ -18,7 +18,7 @@ return array(
 		);
 
 		$process = proc_open(
-			'node ' . __DIR__ . '/../../console/bootstrap.js ' . $dl_config_path . ' ' . $args[1],
+			'node ' . __DIR__ . '/../../console/bootstrap.js ' . $config_path . ' ' . $args[1],
 			$descriptors,
 			$pipes
 		);
