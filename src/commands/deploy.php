@@ -127,6 +127,8 @@ return array(
 		if ($stats->modules->updated > 0) { Console::output($stats->modules->updated . " module(s) updated."); }
 		if ($stats->modules->uploaded > 0) { Console::output($stats->modules->uploaded . " module(s) uploaded."); }
 
+		Console::output("Successfully deployed.");
+
 		if (!empty($stats->packages)) { Console::output("\nPackages:\n\t" . preg_replace("/\\n/", "\n\t", $stats->packages)); }
 	}
 );
