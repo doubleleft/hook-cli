@@ -100,10 +100,13 @@ return array(
 		}
 
 		Console::loading_output("Deploying...");
+		$schedule_data = Utils::parse_yaml($root_directory . '/schedule.yaml');
+		$schedule = ($schedule_data && isset($schedule_data['schedule'])) ? $schedule_data['schedule'] : array();
+
 		$stats = $client->post('apps/deploy', array(
 			'modules' => $module_sync,
 			'schema' => Utils::parse_yaml($root_directory . '/schema.yaml'),
-			'schedule' => Utils::parse_yaml($root_directory . '/schedule.yaml'),
+			'schedule' => $schedule,
 			'config' => Utils::parse_yaml($root_directory . '/config.yaml'),
 			'security' => Utils::parse_yaml($root_directory . '/security.yaml'),
 			'packages' => Utils::parse_yaml($root_directory . '/packages.yaml')

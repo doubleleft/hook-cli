@@ -34,8 +34,7 @@ class Utils {
 					$data = $parsed;
 				}
 			} catch (Symfony\Component\Yaml\Exception\ParseException $e) {
-				Console::error("Parse error on '" . basename($file_path) . "': " . $e->getMessage());
-				die();
+				throw new Exception("Parse error on '" . basename($file_path) . "': " . $e->getMessage());
 			}
 		}
 
