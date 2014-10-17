@@ -3,6 +3,7 @@
 use Client\Utils as Utils;
 use Client\Client as Client;
 use Client\Project as Project;
+use Client\Console as Console;
 
 return array(
 	'arg0'    => 'db:seed',
@@ -24,9 +25,13 @@ return array(
 
 			if (isset($options['truncate']) && $options['truncate']) {
 				echo "Truncating '{$collection}'... ";
-				$truncate = $client->delete('collection/' . $collection);
-				if (count($truncate)>0) {
-					echo "ok.";
+				try {
+					$truncate = $client->delete('collection/' . $collection);
+					if (count($truncate)>0) {
+						echo "Success.";
+					}
+				} catch (Exception $e) {
+					echo "Failed.";
 				}
 				echo PHP_EOL;
 			}
