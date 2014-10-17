@@ -25,8 +25,8 @@ return array(
 		$client = new Client();
 		// $request = $client->request('get', $url);
 
-		$response = $client->request('get', $url)->send()->json();
-		echo $response['text'];
+		$response = $client->request('get', $url);
+		echo $response->text;
 
 		// if ($cli['tail']) {
 		// 	// read from stream
