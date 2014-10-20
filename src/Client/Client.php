@@ -35,6 +35,10 @@ class Client {
 	}
 
 	public function request($method, $segments, $data = array()) {
+		if (static::$debug) {
+			Console::output("Client:request -> " . $method . " - " . $segments);
+			print_r($data);
+		}
 		$client = new HTTPClient();
 		$response = null;
 		try {
