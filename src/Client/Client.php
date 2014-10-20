@@ -95,7 +95,7 @@ class Client {
 			$status = $response->getStatusCode();
 			$error .= "[{$url['host']}] " . $data->error . " (status {$status})";
 
-			if (static::$debug && $data->trace) {
+			if (static::$debug && isset($data->trace)) {
 				$error .= "\n\nStack trace:\n" . $data->trace;
 			}
 
