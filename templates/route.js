@@ -3,5 +3,5 @@
  */
 Router.{method}('{path}', function({arguments})
 {
-    return this.json({ success : true })
+    return { success : true }
 })
