@@ -24,7 +24,7 @@
   process.stdout.write("Loading...");
 
   // first argument can be html string, filename, or url
-  jsdom.env(html, ["http://hook.ddll.co/dist/hook.js"], function (errors, window) {
+  jsdom.env(html, ["./node_modules/hook-javascript/dist/hook.js"], function (errors, window) {
 
     // Define browser features
     // -----------------------
