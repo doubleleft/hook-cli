@@ -1,3 +1,4 @@
-# microsoft/windowsazure: 'dev-master' # storage provider
-# aws/aws-php-sdk: '2.7.*'             # storage provider
-# dropbox/dropbox-sdk: '1.1.*'         # storage provider
+## Storage providers
+# microsoft/windowsazure: '0.4.0'
+# aws/aws-php-sdk: '2.7.*'
+# dropbox/dropbox-sdk: '1.1.*'
