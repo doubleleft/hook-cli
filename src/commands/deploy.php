@@ -120,18 +120,22 @@ return array(
 		}
 
 		if (isset($stats->error)) {
-			throw new Exception("Can't deploy: ". $stats->error);
+			Console::error($stats->error);
 		}
 
-		if ($stats->schedule) { Console::output("schedule updated."); }
-		if ($stats->schema > 0) { Console::output($stats->schema . " collection(s) migrated."); }
+		if (isset($stats->schedule)) { Console::output("Schedule updated."); }
+		if (isset($stats->schema) && $stats->schema > 0) { Console::output($stats->schema . " collection(s) migrated."); }
 
-		if ($stats->modules->removed > 0) { Console::output($stats->modules->removed . " module(s) removed."); }
-		if ($stats->modules->updated > 0) { Console::output($stats->modules->updated . " module(s) updated."); }
-		if ($stats->modules->uploaded > 0) { Console::output($stats->modules->uploaded . " module(s) uploaded."); }
+		if (isset($stats->modules)) {
+			if ($stats->modules->removed > 0) { Console::output($stats->modules->removed . " module(s) removed."); }
+			if ($stats->modules->updated > 0) { Console::output($stats->modules->updated . " module(s) updated."); }
+			if ($stats->modules->uploaded > 0) { Console::output($stats->modules->uploaded . " module(s) uploaded."); }
+		}
 
-		Console::output("Successfully deployed.");
+		if (isset($stats->packages) && !empty($stats->packages)) {
+			Console::output("\nPackages:\n\t" . preg_replace("/\\n/", "\n\t", $stats->packages));
+		}
 
-		if (!empty($stats->packages)) { Console::output("\nPackages:\n\t" . preg_replace("/\\n/", "\n\t", $stats->packages)); }
+		Console::success("Successfully deployed.");
 	}
 );
