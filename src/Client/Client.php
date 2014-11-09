@@ -10,7 +10,12 @@ class Client {
 	public static $endpoint;
 	public static $debug = false;
 
+	protected $raiseExceptions = true;
+
 	public static function setEndpoint($endpoint) {
+		if (substr($haystack, -strlen('/')) !== '/') {
+			$endpoint .= '/';
+		}
 		static::$endpoint = $endpoint;
 	}
 
@@ -44,13 +49,18 @@ class Client {
 		try {
 			return $client->{$method}(self::$endpoint . $segments, array(
 				'headers' => $this->getHeaders(),
-				'body' => $data
+				'body' => $data,
+				'exceptions' => $this->raiseExceptions
 			))->json(array(
 				'object' => true
 			));
 		} catch (Exception $e) {
 			$this->guzzleException($e);
 		}
+	}
+
+	public function setRaiseExceptions($bool) {
+		$this->raiseExceptions = $bool;
 	}
 
 	protected function getHeaders() {

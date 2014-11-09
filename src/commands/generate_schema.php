@@ -12,6 +12,7 @@ return array(
 		@mkdir(dirname($dest), 0777, true);
 
 		$client = new Client();
+		$client->setRaiseExceptions(false);
 		$cached_schema = $client->get('apps/schema');
 
 		$yaml = new Symfony\Component\Yaml\Dumper();
