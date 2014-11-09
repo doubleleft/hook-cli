@@ -1,6 +1,6 @@
-<?php
+<?php namespace Client;
 
-namespace Client;
+use Exception;
 
 class Utils {
 
@@ -18,8 +18,7 @@ class Utils {
 		$lint_return_code = null;
 		exec('php -l ' . $file_path, $lint_output, $lint_return_code);
 		if ($lint_return_code !== 0) {
-			Console::error($lint_output[0]);
-			die();
+			throw new Exception(join("\n\n" , $lint_output));
 		}
 	}
 
