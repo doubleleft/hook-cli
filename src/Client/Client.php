@@ -13,7 +13,7 @@ class Client {
 	protected $raiseExceptions = true;
 
 	public static function setEndpoint($endpoint) {
-		if (substr($haystack, -strlen('/')) !== '/') {
+		if (substr($endpoint, -strlen('/')) !== '/') {
 			$endpoint .= '/';
 		}
 		static::$endpoint = $endpoint;
