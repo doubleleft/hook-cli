@@ -6,6 +6,20 @@ return array(
 	'command' => 'server [<address=localhost:4665>]',
 	'description' => 'Run development server. Must be at server root.',
 	'run' => function($args) {
+		$root = getcwd();
+
+		$is_hook_root = false;
+		$composer_file = getcwd().'/composer.json';
+
+		if (file_exists($composer_file)) {
+			$composer_json = json_decode(file_get_contents($composer_file), true);
+			$is_hook_root = ($composer_json['name'] == 'doubleleft/hook');
+		}
+
+		if (!$is_hook_root) {
+			throw new Exception("Not on hook directory ({$root}).\nPlease cd into your local hook dir before running the 'server' command.");
+		}
+
 		$descriptors = array(
 			array('file', '/dev/tty', 'r'),
 			array('file', '/dev/tty', 'w'),
@@ -13,6 +27,6 @@ return array(
 		);
 
 		$bind = $args[1] ?: 'localhost:4665';
-		$process = proc_open("php -S {$bind} -t " . Project::root() . '/public', $descriptors, $pipes);
+		$process = proc_open("php -S {$bind} -t " . $root . '/public', $descriptors, $pipes);
 	}
 );
