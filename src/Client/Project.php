@@ -6,8 +6,9 @@ class Project {
 	private static $config_file;
 	private static $temp_config;
 
-	const CONFIG_FILE = '.hook-config';
-	const DIRECTORY_NAME = 'hook-ext';
+	const DIRECTORY_NAME  = 'hook-ext';
+	const CREDENTIALS_DIR = '.hook-credentials';
+	const CONFIG_FILE     = '.hook-credentials/cli.json';
 
 	public static function getConfigFile() {
 		return self::root() . self::$config_file;
