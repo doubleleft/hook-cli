@@ -72,7 +72,7 @@ return array(
 
 			if ($local_exists) {
 				// module already exists, is our version newer?
-				if ($local_updated_at != $updated_at) {
+				if ($local_updated_at > $updated_at) {
 					$module_file = $root_directory . '/' . $type . '/' . $name;
 					$module_contents = file_get_contents($module_file);
 					Utils::check_php_syntax($module_file);
