@@ -13,7 +13,7 @@ return array(
 
 		if (file_exists($composer_file)) {
 			$composer_json = json_decode(file_get_contents($composer_file), true);
-			$is_hook_root = ($composer_json['name'] == 'doubleleft/hook');
+			$is_hook_root = ($composer_json['name'] == 'doubleleft/hook' || $composer_json['name'] == 'doubleleft/hook-framework');
 		}
 
 		if (!$is_hook_root) {
