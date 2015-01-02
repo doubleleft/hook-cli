@@ -12,9 +12,9 @@ return array(
 		}
 
 		$descriptors = array(
-			array('file', '/dev/tty', 'r'),
-			array('file', '/dev/tty', 'w'),
-			array('file', '/dev/tty', 'w')
+			array('file', 'php://stdin', 'r'),
+			array('file', 'php://stdout', 'w'),
+			array('file', 'php://stderr', 'w')
 		);
 
 		$process = proc_open(
@@ -22,5 +22,12 @@ return array(
 			$descriptors,
 			$pipes
 		);
+
+		// keep `hook` process open, to keep STDIN/STDOUT reference
+		// while `console` is running.
+		while (is_resource($process)) {
+			usleep(50);
+		}
+
 	}
 );
