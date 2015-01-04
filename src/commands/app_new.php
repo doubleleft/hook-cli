@@ -39,11 +39,7 @@ return array(
 		}
 
 		if (!$args['json']) {
-			$keys_path = Client\Project::root(Client\Project::CREDENTIALS_DIR) . '/';
-
-			if (!file_exists($keys_path)) {
-				@mkdir($keys_path, 0777, true);
-			}
+			Client\Project::createCredentialsDirectory();
 
 			echo "Application: {$app->name}" . PHP_EOL;
 			echo "Keys:" . PHP_EOL;
@@ -54,7 +50,7 @@ return array(
 				echo "\ttype: {$key->type}" . PHP_EOL;
 				echo "}" . PHP_EOL;
 
-				file_put_contents($keys_path . '/' . $key->type . '.json', json_encode(array(
+				file_put_contents(Client\Project::getCredentialsPath() . $key->type . '.json', json_encode(array(
 					'app_id' => $key->app_id,
 					'key' => $key->key,
 					'endpoint' => $args['endpoint']

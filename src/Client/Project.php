@@ -1,6 +1,4 @@
-<?php
-
-namespace Client;
+<?php namespace Client;
 
 class Project {
 	private static $config_file;
@@ -10,7 +8,25 @@ class Project {
 	const CREDENTIALS_DIR = '.hook-credentials';
 	const CONFIG_FILE     = '.hook-credentials/cli.json';
 
+	// TODO: remove deprecated warning.
+	// this was introduced on 0.2.2
+	const DEPRECATED_CONFIG_FILE = '.hook-config';
+
 	public static function getConfigFile() {
+		$deprecated_config_file = self::root() . self::DEPRECATED_CONFIG_FILE;
+
+		if (file_exists($deprecated_config_file)) {
+			Console::error("You are using deprecated `.hook-config` file.
+Do you want to upgrade it? (y/n)");
+			$answer = Console::readline();
+			if ($answer == "y") {
+				self::createCredentialsDirectory();
+				rename($deprecated_config_file, self::getCredentialsPath() . 'cli.json');
+			} else {
+				return $deprecated_config_file;
+			}
+		}
+
 		return self::root() . self::$config_file;
 	}
 
@@ -55,6 +71,17 @@ class Project {
 		}
 
 		return getcwd() . '/' . $concat;
+	}
+
+	public static function getCredentialsPath() {
+		return self::root(self::CREDENTIALS_DIR) . '/';
+	}
+
+	public static function createCredentialsDirectory() {
+		$credentials_path = self::getCredentialsPath();
+		if (!file_exists($credentials_path)) {
+			@mkdir($credentials_path, 0777, true);
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 {
   "name": "doubleleft/hook-cli",
+  "version": "0.2.2",
   "description": "The commandline interface for hook",
   "keywords": ["hook", "cli", "console"],
   "license": "MIT",
