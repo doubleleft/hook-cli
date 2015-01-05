@@ -2,6 +2,7 @@
   'use strict';
 
   var fs = require('fs'),
+      vm = require('vm'),
       util = require('util'),
       repl = require('repl'),
       jsdom = require('jsdom'),
@@ -39,20 +40,35 @@
     window.Blob = function Blob() {};
     window.Blob.constructor = Buffer.prototype;
 
-    function writer(obj) {
-      var that = this;
+    var promises = [];
 
-      if(obj.constructor.name == 'Promise'){
-        obj.then(function(data) {
-          prettyPrint(data,that);
-        }).catch(function(data) {
-          prettyPrint(data,that);
+    function evaluate(cmd, context, filename, callback) {
+      cmd = cmd.substr(1, cmd.length-2)
+
+      var result, script = vm.createScript(cmd);
+      try {
+        result = script.runInNewContext(context);
+      } catch (e) {
+        callback(null, e);
+      }
+
+      if(result && result.constructor && result.constructor.name == 'Promise'){
+        console.log("Will wait for promise...", result.then)
+        result.then(function(data) {
+          console.log("THEN?");
+          callback(null, data);
+        }).otherwise(function(data) {
+          console.log("OTHERWISE?");
+          callback(null, data);
         });
-        return "[ Running... ]";
       } else {
-        return util.inspect(obj, {colors: true});
+        callback(null, result);
       }
     }
+
+    // function writer(result) {
+    //   return util.inspect(result, {colors: true});
+    // }
 
     function prettyPrint(data, pointer){
       var options = {};
@@ -116,7 +132,8 @@
 
       sess = repl.start({
         prompt: 'hook: javascript> ',
-        writer: writer,
+        eval: evaluate,
+        // writer: writer,
         ignoreUndefined: true
       });
     } else {
