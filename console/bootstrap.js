@@ -43,32 +43,36 @@
     var promises = [];
 
     function evaluate(cmd, context, filename, callback) {
+      var result, script;
       cmd = cmd.substr(1, cmd.length-2)
 
-      var result, script = vm.createScript(cmd);
       try {
+        script = vm.createScript(cmd);
         result = script.runInNewContext(context);
-      } catch (e) {
-        callback(null, e);
-      }
+      } catch (e) { }
 
       if(result && result.constructor && result.constructor.name == 'Promise'){
         console.log("Will wait for promise...", result.then)
+        console.log(callback)
         result.then(function(data) {
           console.log("THEN?");
-          callback(null, data);
+          callback(null, [data, 'table']);
         }).otherwise(function(data) {
           console.log("OTHERWISE?");
-          callback(null, data);
+          callback(null, [data, 'inspect']);
         });
       } else {
-        callback(null, result);
+        callback(null, [result, 'inspect']);
       }
     }
 
-    // function writer(result) {
-    //   return util.inspect(result, {colors: true});
-    // }
+    function writer(result) {
+      if (result[1] == 'table') {
+        return prettyPrint(result[0]);
+      } else {
+        return util.inspect(result[0], {colors: true});
+      }
+    }
 
     function prettyPrint(data, pointer){
       var options = {};
@@ -98,14 +102,12 @@
           table.push(values);
         }
 
-        pointer.outputStream.write("\n" + table.toString() + "\n");
-      } else if (data.lengh == 0) {
-        pointer.outputStream.write("\nEmpty.\n");
+        return table.toString();
       } else {
         // Pretty general output
-        pointer.outputStream.write("\n" + util.inspect(data, {colors: true}) + "\n");
+        return util.inspect(data, {colors: true});
       }
-      pointer.displayPrompt();
+      // pointer.displayPrompt();
     }
 
     var sess,
@@ -114,13 +116,6 @@
 
     // Create browser client
     var hook = new window.Hook.Client(config);
-
-    var _request = window.Hook.Client.prototype.request;
-    window.Hook.Client.prototype.request = function(segments, method, data) {
-      if (typeof(data)==="undefined") { data = {}; }
-      data._sync = true;
-      return _request.apply(this, arguments);
-    }
 
     if (!evaluateFile) {
       console.log("\rAPI Documentation: http://doubleleft.github.io/hook-javascript\n");
@@ -133,7 +128,7 @@
       sess = repl.start({
         prompt: 'hook: javascript> ',
         eval: evaluate,
-        // writer: writer,
+        writer: writer,
         ignoreUndefined: true
       });
     } else {
