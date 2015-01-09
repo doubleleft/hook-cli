@@ -28,5 +28,11 @@ return array(
 
 		$bind = $args[1] ?: 'localhost:4665';
 		$process = proc_open("php -S {$bind} -t " . $root . '/public', $descriptors, $pipes);
+		
+		// keep `hook` process open, to keep STDIN/STDOUT reference
+		// while `server` is running.
+		while (is_resource($process)) {
+			usleep(50);
+		}
 	}
 );
