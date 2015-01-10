@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\RequestException;
 use Exception;
 
 class Client {
-	public static $endpoint;
+	public static $endpoint = 'http://localhost:4665/';
 	public static $debug = false;
 
 	protected $raiseExceptions = true;

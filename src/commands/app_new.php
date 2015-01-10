@@ -10,10 +10,6 @@ return array(
 			throw new Exception("'application-name' is required.");
 		}
 
-		if (!$args['endpoint']) {
-			throw new Exception("'endpoint' is required.");
-		}
-
 		$client = new Client\Client();
 		$app = $client->post('apps', array(
 			'app' => array('name' => $args[1])
