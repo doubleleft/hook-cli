@@ -42,23 +42,30 @@
 
     var promises = [];
 
+    var commandBuffer = "";
     function evaluate(cmd, context, filename, callback) {
       var result, script;
       cmd = cmd.substr(1, cmd.length-2)
 
       try {
-        script = vm.createScript(cmd);
+        script = vm.createScript(commandBuffer + cmd);
         result = script.runInNewContext(context);
-      } catch (e) { }
+
+        // clear buffer for next command
+        commandBuffer = "";
+      } catch (e) {
+
+        // accumulate command in buffer if it's not finished.
+        if (e.message == "Unexpected end of input") {
+          commandBuffer += cmd;
+          return;
+        }
+      }
 
       if(result && result.constructor && result.constructor.name == 'Promise'){
-        console.log("Will wait for promise...", result.then)
-        console.log(callback)
         result.then(function(data) {
-          console.log("THEN?");
           callback(null, [data, 'table']);
         }).otherwise(function(data) {
-          console.log("OTHERWISE?");
           callback(null, [data, 'inspect']);
         });
       } else {
