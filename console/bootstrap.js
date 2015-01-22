@@ -2,6 +2,7 @@
   'use strict';
 
   var fs = require('fs'),
+      vm = require('vm'),
       util = require('util'),
       repl = require('repl'),
       jsdom = require('jsdom'),
@@ -39,18 +40,44 @@
     window.Blob = function Blob() {};
     window.Blob.constructor = Buffer.prototype;
 
-    function writer(obj) {
-      var that = this;
+    var promises = [];
 
-      if(obj.constructor.name == 'Promise'){
-        obj.then(function(data) {
-          prettyPrint(data,that);
-        }).catch(function(data) {
-          prettyPrint(data,that);
+    var commandBuffer = "";
+    function evaluate(cmd, context, filename, callback) {
+      var result, script;
+      cmd = cmd.substr(1, cmd.length-2)
+
+      try {
+        script = vm.createScript(commandBuffer + cmd);
+        result = script.runInNewContext(context);
+
+        // clear buffer for next command
+        commandBuffer = "";
+      } catch (e) {
+
+        // accumulate command in buffer if it's not finished.
+        if (e.message == "Unexpected end of input") {
+          commandBuffer += cmd;
+          return;
+        }
+      }
+
+      if(result && result.constructor && result.constructor.name == 'Promise'){
+        result.then(function(data) {
+          callback(null, [data, 'table']);
+        }).otherwise(function(data) {
+          callback(null, [data, 'inspect']);
         });
-        return "[ Running... ]";
       } else {
-        return util.inspect(obj, {colors: true});
+        callback(null, [result, 'inspect']);
+      }
+    }
+
+    function writer(result) {
+      if (result[1] == 'table') {
+        return prettyPrint(result[0]);
+      } else {
+        return util.inspect(result[0], {colors: true});
       }
     }
 
@@ -82,14 +109,12 @@
           table.push(values);
         }
 
-        pointer.outputStream.write("\n" + table.toString() + "\n");
-      } else if (data.lengh == 0) {
-        pointer.outputStream.write("\nEmpty.\n");
+        return table.toString();
       } else {
         // Pretty general output
-        pointer.outputStream.write("\n" + util.inspect(data, {colors: true}) + "\n");
+        return util.inspect(data, {colors: true});
       }
-      pointer.displayPrompt();
+      // pointer.displayPrompt();
     }
 
     var sess,
@@ -98,13 +123,6 @@
 
     // Create browser client
     var hook = new window.Hook.Client(config);
-
-    var _request = window.Hook.Client.prototype.request;
-    window.Hook.Client.prototype.request = function(segments, method, data) {
-      if (typeof(data)==="undefined") { data = {}; }
-      data._sync = true;
-      return _request.apply(this, arguments);
-    }
 
     if (!evaluateFile) {
       console.log("\rAPI Documentation: http://doubleleft.github.io/hook-javascript\n");
@@ -116,6 +134,7 @@
 
       sess = repl.start({
         prompt: 'hook: javascript> ',
+        eval: evaluate,
         writer: writer,
         ignoreUndefined: true
       });
