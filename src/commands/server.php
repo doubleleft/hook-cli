@@ -1,4 +1,5 @@
 <?php
+use Client\Client as Client;
 use Client\Project as Project;
 
 return array(
@@ -26,9 +27,9 @@ return array(
 			array('file', '/dev/tty', 'w')
 		);
 
-		$bind = $args[1] ?: 'localhost:4665';
+		$bind = $args[1] ?: '0.0.0.0:4665';
 		$process = proc_open("php -S {$bind} -t " . $root . '/public', $descriptors, $pipes);
-		
+
 		// keep `hook` process open, to keep STDIN/STDOUT reference
 		// while `server` is running.
 		while (is_resource($process)) {
