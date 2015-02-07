@@ -57,6 +57,9 @@ $cli->option('c')
  */
 $cli->option('t')->aka('tail')->boolean();
 $cli->option('n');
+$cli->option('server')->
+  boolean()->
+  describedAs('Server REPL for `console` command.');
 
 if (!$cli['json']) {
   echo "..." . PHP_EOL;

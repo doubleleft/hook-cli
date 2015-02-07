@@ -6,12 +6,15 @@
       util = require('util'),
       repl = require('repl'),
       jsdom = require('jsdom'),
+      js2php = require('js2php'),
       html = '<html><body></body></html>',
       Table = require('cli-table'),
       XMLHttpRequest = require('xmlhttprequest'),
       FormData = require('form-data'),
       WebSocket = require('ws'),
-      evaluateFile = (process.argv[3]);
+      argv = require('minimist')(process.argv.slice(2)),
+      isServer = (argv.server == true),
+      evaluateFile = argv._[1];
 
   if (!evaluateFile) {
     console.log(" _                 _    ");
@@ -49,12 +52,25 @@
 
       try {
         script = vm.createScript(commandBuffer + cmd);
-        result = script.runInNewContext(context);
+
+        if (isServer) {
+          // server-side REPL
+          var code = js2php(commandBuffer + cmd ), lines = code.split("\n");
+          // remove '<?php' from first line
+          lines.shift();
+          // add return statement to the last line
+          lines[lines.length - 2] = "return " + lines[lines.length -2];
+
+          code = lines.join("\n");
+          result = hook.post('apps/evaluate', { code: code });
+        } else {
+          // client REPL
+          result = script.runInNewContext(context);
+        }
 
         // clear buffer for next command
         commandBuffer = "";
       } catch (e) {
-
         // accumulate command in buffer if it's not finished.
         if (e.message == "Unexpected end of input") {
           commandBuffer += cmd;
@@ -119,21 +135,35 @@
 
     var sess,
         $ = require('jquery')(window),
-        config = JSON.parse(fs.readFileSync(process.argv[2]));
+
+        config = JSON.parse(fs.readFileSync(argv._[0]));
 
     // Create browser client
     var hook = new window.Hook.Client(config);
 
     if (!evaluateFile) {
-      console.log("\rAPI Documentation: http://doubleleft.github.io/hook-javascript\n");
-      console.log("Available variables to hack on:");
-      console.log("\t- hook - Hook.Client");
-      console.log("\t- config - .hook-config");
-      console.log("\t- $ - jQuery 2.1.0");
-      console.log("\t- window");
+      var prompt = (isServer) ? 'server' : 'client',
+          availableVariables = ['config - .hook-config'];
+
+      if (!isServer) {
+        console.log("\rClient-side playground.");
+        console.log("API Documentation: http://doubleleft.github.io/hook-javascript\n");
+
+        availableVariables.push("hook - Hook.Client");
+        availableVariables.push("$ - jQuery 2.1.0");
+        availableVariables.push("window");
+      } else {
+        console.log("\rServer-side playground.");
+      }
+
+      console.log("\rAvailable variables to hack on:");
+      for (var i = 0; i < availableVariables.length; i++) {
+        console.log("\t- " + availableVariables[i]);
+      }
+      console.log();
 
       sess = repl.start({
-        prompt: 'hook: javascript> ',
+        prompt: (prompt + ': javascript> '),
         eval: evaluate,
         writer: writer,
         ignoreUndefined: true
@@ -160,4 +190,5 @@
     }
 
   });
+
 }());
