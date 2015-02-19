@@ -25,13 +25,14 @@ return array(
 		$dest = Client\Project::root(Client\Project::DIRECTORY_NAME) . '/';
 		@mkdir($dest, 0777, true);
 
-		$default_config_files = array('security.yaml', 'packages.yaml');
+		$default_config_files = array('security.yaml', 'packages.yaml', 'config.yaml', 'schedule.yaml');
 		foreach($default_config_files as $config_file) {
 			$dest_file = $dest . $config_file;
 
 			$template = file_get_contents(__DIR__ . '/../../templates/'. $config_file);
-			$template = preg_replace('/{pepper}/', sha1(uniqid(true)), $template);
-			file_put_contents($dest_file, $template);
+			if (!file_exists($dest_file)) {
+				file_put_contents($dest_file, $template);
+			}
 		}
 
 		if (!$args['json']) {
