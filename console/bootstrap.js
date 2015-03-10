@@ -48,7 +48,6 @@
     var commandBuffer = "";
     function evaluate(cmd, context, filename, callback) {
       var result, script;
-      cmd = cmd.substr(1, cmd.length-2)
 
       try {
         script = vm.createScript(commandBuffer + cmd);
