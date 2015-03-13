@@ -100,7 +100,7 @@ if (isset($cli[0])) {
     }
 
   } else {
-    $cli->printHelp();
-    echo "Command '{$cli[0]}' not found." . PHP_EOL;
+    echo "Command '{$cli[0]}' not found. " . PHP_EOL . "Use 'hook --help' to see available commands."  . PHP_EOL . PHP_EOL;
+    echo "Usage: " . PHP_EOL .  "\thook command [--options]" . PHP_EOL;
   }
 }
