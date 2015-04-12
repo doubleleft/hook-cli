@@ -1,5 +1,6 @@
 <?php
 use Client\Client as Client;
+use Client\Project as Project;
 
 return array(
 	'arg0'    => 'keys',
@@ -8,25 +9,26 @@ return array(
 	'run' => function($args) {
 
 		$client = new Client();
-		$app = $client->get("apps/keys");
+		$keys = $client->get("apps/keys");
+
+		$project = Project::getConfig();
 
 		if (!$args['json']) {
-			echo "App: {$app->name}" . PHP_EOL;
-			if (count($app->keys) > 0) {
-				echo "Access tokens:" . PHP_EOL;
-				foreach($app->keys as $key) {
-					echo "{" . PHP_EOL;
-					echo "\tappId: {$app->_id}" . PHP_EOL;
-					echo "\tkey: " . $key->key . PHP_EOL;
-					if ($key->admin) {
-						echo "\tadmin: {$key->admin}" . PHP_EOL;
-					}
-					echo "}" . PHP_EOL;
-				}
+			echo "Application name: {$project['name']}" . PHP_EOL;
+			echo "Application keys:" . PHP_EOL;
+			foreach($keys as $key) {
+				echo "{" . PHP_EOL;
+				echo "\tapp_id: {$key->app_id}" . PHP_EOL;
+				echo "\tkey: " . $key->key . PHP_EOL;
+				echo "\ttype: " . $key->type . PHP_EOL;
+				echo "}" . PHP_EOL;
+			}
+
+			if (count($keys) > 0) {
 			}
 		}
 
-		return $app;
+		return $keys;
 
 	}
 );
