@@ -25,7 +25,7 @@ return array(
 		$dest = Client\Project::root(Client\Project::DIRECTORY_NAME) . '/';
 		@mkdir($dest, 0777, true);
 
-		$default_config_files = array('security.yaml', 'packages.yaml', 'config.yaml', 'schedule.yaml');
+		$default_config_files = array('security.yaml', 'packages.yaml', 'config.yaml', 'schedule.yaml', 'schema.yaml');
 		foreach($default_config_files as $config_file) {
 			$dest_file = $dest . $config_file;
 
