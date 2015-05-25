@@ -18,13 +18,13 @@ class Project {
 		$credentials_cli_path = self::getCredentialsPath() . 'cli.json';
 
 		if (file_exists($deprecated_config_file)) {
-			Console::error("You are using deprecated `.hook-config` file.
-Do you want to upgrade it? (y/n)");
+			Console::error("You are using deprecated `.hook-config` file." . PHP_EOL . "Do you want to upgrade it? (y/n)");
 			$answer = Console::readline();
 			if ($answer == "y") {
 				self::createCredentialsDirectory();
 				rename($deprecated_config_file, $credentials_cli_path);
 			} else {
+				static::$temp_config = json_decode(file_get_contents($deprecated_config_file), true);
 				return $deprecated_config_file;
 			}
 		}
