@@ -4,13 +4,15 @@
   "description": "interactive console for hook",
   "main": "bootstrap.js",
   "dependencies": {
-    "hook-javascript": "~0.2.0",
+    "hook-javascript": "~0.3",
     "cli-table": "~0.3.0",
     "jquery": "~2.1.0",
     "xmlhttprequest": "~1.6.0",
     "form-data": "~0.1.2",
-    "jsdom": "~0.10.1",
-    "ws": "~0.4.31"
+    "jsdom": "~1.*",
+    "ws": "~0.4.31",
+    "js2php": "~0.0.14",
+    "minimist": "^1.1.0"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,11 +1,13 @@
-# Setup a pepper to generate the encrypted password.
-# auth_pepper: {pepper}
-
 # Whitelist of allowed host origins
 allowed_origins:
   - '*'
 
+roles:
+  - admin
+
 # collection permissions
 collections:
+
   auths:
-    allow: '*'
+    crud: owner # only the owner can read / update / delete
+    create: all # everyone can create

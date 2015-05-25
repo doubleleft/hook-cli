@@ -11,7 +11,7 @@ return array(
 			throw new Exception("You must specify a collection name for seeding.");
 		}
 
-		$collection = strtolower($args[1]);
+		$collection = str_plural(strtolower($args[1]));
 
 		$dest = Project::root(Project::DIRECTORY_NAME) . '/seeds/';
 		$dest_file = $dest . $collection . '.yaml';

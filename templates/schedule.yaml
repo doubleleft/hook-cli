@@ -12,10 +12,10 @@ schedule:
 #
 # Examples:
 #
-# - url: search_something
+# - task: search_something
 #   schedule: '{daily,hourly,monthly,weekly}'
 #
-# - url: do_something
+# - task: do_something
 #   schedule: *    *    *    *    *
 #             -    -    -    -    -
 #             |    |    |    |    |

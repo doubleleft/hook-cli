@@ -3,6 +3,8 @@ use Client\Client as Client;
 use Client\Project as Project;
 use Client\Console as Console;
 
+use Symfony\Component\Yaml\Yaml;
+
 return array(
 	'arg0'    => 'config',
 	'command' => 'config',
@@ -18,11 +20,9 @@ return array(
 				Console::output($key . ': ' . $value);
 			}
 			Console::output(str_repeat('-', 37));
+
 			if ($configs) {
-				foreach($configs as $config) {
-					preg_match('/([^$|\n]+)/', $config->value, $value);
-					Console::output($config->name . ': ' . $value[1]);
-				}
+				print Yaml::dump(json_decode(json_encode($configs), true), PHP_INT_MAX);
 			} else {
 				Console::output("No configurations found for: '{$project['name']}'.");
 			}

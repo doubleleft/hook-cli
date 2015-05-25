@@ -11,16 +11,25 @@ return array(
 			throw new Exception("No ". Client\Project::CONFIG_FILE ." file found at project root.\n");
 		}
 
+		$is_server = ($args['server']) ? " --server" : "";
+
 		$descriptors = array(
-			array('file', '/dev/tty', 'r'),
-			array('file', '/dev/tty', 'w'),
-			array('file', '/dev/tty', 'w')
+			array('file', 'php://stdin', 'r'),
+			array('file', 'php://stdout', 'w'),
+			array('file', 'php://stderr', 'w')
 		);
 
 		$process = proc_open(
-			'node ' . __DIR__ . '/../../console/bootstrap.js ' . $config_path . ' ' . $args[1],
+			'node ' . __DIR__ . '/../../console/bootstrap.js ' . $config_path . ' ' . $args[1] . ' ' . $is_server,
 			$descriptors,
 			$pipes
 		);
+
+		// keep `hook` process open, to keep STDIN/STDOUT reference
+		// while `console` is running.
+		while (is_resource($process)) {
+			usleep(50);
+		}
+
 	}
 );
