@@ -1,6 +1,7 @@
 <?php
 use Client\Project as Project;
 use Client\Client as Client;
+use Client\Console as Console;
 
 return array(
 	'arg0'    => 'app:new',
@@ -41,6 +42,7 @@ return array(
 			}
 
 			if (!file_exists($dest_file)) {
+				Console::success('create ' . str_replace(Project::root(), "", $dest_file));
 				file_put_contents($dest_file, $template);
 			}
 		}
@@ -48,8 +50,6 @@ return array(
 		if (!$args['json']) {
 			Project::createCredentialsDirectory();
 
-			echo "Application: {$app->name}" . PHP_EOL;
-			echo "Keys:" . PHP_EOL;
 			foreach($app->keys as $key) {
 				$credentials = array(
 					'app_id' => $key->app_id,
@@ -58,10 +58,12 @@ return array(
 					'endpoint' => Client::getEndpoint()
 				);
 
-				echo json_encode($credentials, JSON_PRETTY_PRINT) . PHP_EOL;
-
-				file_put_contents(Project::getCredentialsPath() . $key->type . '.json', json_encode($credentials));
+				$dest_file = Project::getCredentialsPath() . $key->type . '.json';
+				file_put_contents($dest_file, json_encode($credentials));
+				Console::success('create ' . str_replace(Project::root(), "", $dest_file));
 			}
+
+			Console::output('Application created successfully.');
 		}
 
 		return $app->keys;
