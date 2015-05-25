@@ -8,10 +8,12 @@ return array(
 
 		$config_path = Client\Project::getConfigFile();
 		if (!file_exists($config_path)) {
-			throw new Exception("No ". Client\Project::CONFIG_FILE ." file found at project root.\n");
+			throw new Exception("Missing file: '" . $config_path . "'.\n");
 		}
 
-		$is_server = ($args['server']) ? " --server" : "";
+		// flag for server-side console
+		$options = ($args['server']) ? " --server" : "";
+		$options .= ' --environment ' . Client\Project::getEnvironment();
 
 		$descriptors = array(
 			array('file', 'php://stdin', 'r'),
@@ -20,7 +22,7 @@ return array(
 		);
 
 		$process = proc_open(
-			'node ' . __DIR__ . '/../../console/bootstrap.js ' . $config_path . ' ' . $args[1] . ' ' . $is_server,
+			'node ' . __DIR__ . '/../../console/bootstrap.js ' . $config_path . ' ' . $args[1] . ' ' . $options,
 			$descriptors,
 			$pipes
 		);

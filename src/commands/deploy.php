@@ -10,7 +10,6 @@ return array(
 	'command' => 'deploy',
 	'description' => 'Deploy ext directory.',
 	'run' => function($args) use ($commands) {
-
 		$client = new Client();
 
 		Console::loading_output("Retrieving remote data...");
@@ -103,11 +102,28 @@ return array(
 		$schedule_data = Utils::parse_yaml($root_directory . '/schedule.yaml');
 		$schedule = ($schedule_data && isset($schedule_data['schedule'])) ? $schedule_data['schedule'] : array();
 
+		// retrieve application config
+		// compatibility with v0.2.x
+		$config = null;
+		if (file_exists($root_directory . '/config.yaml')) {
+			echo "DEPRECATE WARNING: Please move 'hook-ext/config.yaml' file to 'hook-ext/config/config.yaml'." . PHP_EOL;
+			// TODO: remove on v0.4.x
+			$config = Utils::parse_yaml($root_directory . '/config.yaml');
+		} else {
+			$config = Utils::parse_yaml($root_directory . '/config/config.yaml');
+		}
+		// try to read environment-specific configuration
+		$environment_config_file = $root_directory . '/config/config.' . Project::getEnvironment() . '.yaml';
+		if (file_exists($environment_config_file)) {
+			$environment_config = Utils::parse_yaml($environment_config_file);
+			$config = array_replace_recursive($config, $environment_config);
+		}
+
 		$stats = $client->post('apps/deploy', array(
 			'modules' => $module_sync,
 			'schema' => Utils::parse_yaml($root_directory . '/schema.yaml'),
 			'schedule' => $schedule,
-			'config' => Utils::parse_yaml($root_directory . '/config.yaml'),
+			'config' => $config,
 			'security' => Utils::parse_yaml($root_directory . '/security.yaml'),
 			'packages' => Utils::parse_yaml($root_directory . '/packages.yaml')
 		));

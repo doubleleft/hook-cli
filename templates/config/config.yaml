@@ -1,0 +1,13 @@
+# Auth configs
+auth:
+  token_expiration: 24 # in hours
+
+# Email configs
+email:
+  from: no-reply@domain.com
+
+# # OAuth with Facebook (http://doubleleft.github.io/hook-userguide/Tutorials/OAuth-integration/)
+# oauth:
+#  Facebook:
+#   app_id: 'your_app_id'
+#   app_secret: 'your_app_secret'

@@ -14,6 +14,7 @@
       WebSocket = require('ws'),
       argv = require('minimist')(process.argv.slice(2)),
       isServer = (argv.server == true),
+      environment = argv.environment || "development",
       evaluateFile = argv._[1];
 
   if (!evaluateFile) {
@@ -142,10 +143,11 @@
 
     if (!evaluateFile) {
       var prompt = (isServer) ? 'server' : 'client',
-          availableVariables = ['config - .hook-config'];
+          availableVariables = ['config - ' + argv._[0]];
 
       if (!isServer) {
         console.log("\rClient-side playground.");
+        console.log("Environment: " + environment);
         console.log("API Documentation: http://doubleleft.github.io/hook-javascript\n");
 
         availableVariables.push("hook - Hook.Client");
@@ -153,6 +155,7 @@
         availableVariables.push("window");
       } else {
         console.log("\rServer-side playground.");
+        console.log("Environment: " + environment + "\n");
       }
 
       console.log("\rAvailable variables to hack on:");

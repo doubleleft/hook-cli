@@ -47,9 +47,9 @@ $cli->option('e')
   ->aka('endpoint')
   ->describedAs('Define host endpoint. Default: '. \Client\Client::getEndpoint());
 
-$cli->option('c')
-  ->aka('config')
-  ->describedAs('Alternative config file path');
+$cli->option('env')
+  ->aka('environment')
+  ->describedAs('Environment to use. (app:new, deploy). Default: '. \Client\Client::getEndpoint());
 
 
 /**
@@ -65,8 +65,10 @@ if (!$cli['json']) {
   echo "..." . PHP_EOL;
 }
 
-// Setup .hook-config
-\Client\Project::setConfigFile($cli["config"]!==null ? $cli["config"] : \Client\Project::CONFIG_FILE);
+if ($cli['environment']) {
+  \Client\Project::setEnvironment($cli['environment']);
+}
+
 $app_config = \Client\Project::getConfig();
 
 // show cli version

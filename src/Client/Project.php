@@ -3,10 +3,11 @@
 class Project {
 	private static $config_file;
 	private static $temp_config;
+	private static $environment = 'development';
 
 	const DIRECTORY_NAME  = 'hook-ext';
-	const CREDENTIALS_DIR = '.hook-credentials';
-	const CONFIG_FILE     = '.hook-credentials/cli.json';
+	const CREDENTIALS_DIR = 'hook-ext/credentials';
+	const CONFIG_FILE     = 'hook-ext/credentials/{environment}/cli.json';
 
 	// TODO: remove deprecated warning.
 	// this was introduced on 0.2.2
@@ -14,6 +15,7 @@ class Project {
 
 	public static function getConfigFile() {
 		$deprecated_config_file = self::root() . self::DEPRECATED_CONFIG_FILE;
+		$credentials_cli_path = self::getCredentialsPath() . 'cli.json';
 
 		if (file_exists($deprecated_config_file)) {
 			Console::error("You are using deprecated `.hook-config` file.
@@ -21,26 +23,21 @@ Do you want to upgrade it? (y/n)");
 			$answer = Console::readline();
 			if ($answer == "y") {
 				self::createCredentialsDirectory();
-				rename($deprecated_config_file, self::getCredentialsPath() . 'cli.json');
+				rename($deprecated_config_file, $credentials_cli_path);
 			} else {
 				return $deprecated_config_file;
 			}
 		}
 
-		return self::root() . self::$config_file;
+		return $credentials_cli_path;
 	}
 
-	public static function setConfigFile($file) {
-		self::$config_file = $file;
+	public static function setEnvironment($environment) {
+		static::$environment = $environment;
 	}
 
-	public static function setTempConfig($data) {
-		self::$temp_config = $data;
-	}
-
-	public static function setConfig($data) {
-		$data['endpoint'] = Client::getEndpoint();
-		return file_put_contents(self::getConfigFile(), json_encode($data));
+	public static function getEnvironment() {
+		return static::$environment;
 	}
 
 	public static function getConfig() {
@@ -74,7 +71,7 @@ Do you want to upgrade it? (y/n)");
 	}
 
 	public static function getCredentialsPath() {
-		return self::root(self::CREDENTIALS_DIR) . '/';
+		return self::root(self::CREDENTIALS_DIR) . '/' . self::getEnvironment() . '/';
 	}
 
 	public static function createCredentialsDirectory() {
