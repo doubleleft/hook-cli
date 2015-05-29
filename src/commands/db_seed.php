@@ -44,7 +44,7 @@ return array(
 					// Look for special data fields
 					foreach($data as $field => $value) {
 						if (preg_match('/\!upload ([^$]+)/', $value, $file)) {
-							$filepath = Project::DIRECTORY_NAME . '/seeds/' . $file[1];
+							$filepath = Project::root(Project::DIRECTORY_NAME) . '/seeds/' . $file[1];
 
 							// stop when file doens't exists
 							if (!file_exists($filepath)) {
