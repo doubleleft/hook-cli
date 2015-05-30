@@ -101,7 +101,10 @@
       var options = {};
 
       // Print table for arrays
-      if (typeof(data)==="object" && data.length && data.length > 0) {
+      if (typeof(data)==="object" &&
+          data.length &&
+          data.length > 0 &&
+          typeof(data[0])==="object") {
 
         if (!options.timestamps) {
           delete data[0].created_at;
