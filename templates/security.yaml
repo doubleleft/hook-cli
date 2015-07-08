@@ -3,7 +3,7 @@ allowed_origins:
   - '*'
 
 roles:
-  - admin
+  - trusted
 
 # collection permissions
 collections:
