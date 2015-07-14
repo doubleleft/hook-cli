@@ -37,7 +37,8 @@
     window.localStorage = {
       _items: {},
       getItem: function(name) { return this._items[name]; },
-      setItem: function(name, value) { this._items[name] = value; }
+      setItem: function(name, value) { this._items[name] = value; },
+      removeItem: function(name) { delete this._items[name]; }
     };
     window.FormData = FormData;
     window.WebSocket = WebSocket;
