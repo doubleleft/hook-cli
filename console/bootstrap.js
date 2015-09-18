@@ -29,7 +29,7 @@
   process.stdout.write("Loading...");
 
   // first argument can be html string, filename, or url
-  jsdom.env(html, ["./node_modules/hook-javascript/dist/hook.js"], function (errors, window) {
+  jsdom.env(html, [__dirname + "/node_modules/hook-javascript/dist/hook.js"], function (errors, window) {
 
     // Define browser features
     // -----------------------
@@ -79,7 +79,7 @@
         }
       }
 
-      if(result && result.constructor && result.constructor.name == 'Promise'){
+      if(result && result.constructor && result.constructor.name.match(/Promise$/)){
         result.then(function(data) {
           callback(null, [data, 'table']);
         }).otherwise(function(data) {

@@ -9,7 +9,7 @@
     "jquery": "~2.1.0",
     "xmlhttprequest": "~1.6.0",
     "form-data": "~0.1.2",
-    "jsdom": "~1.*",
+    "jsdom": "~6.5.0",
     "ws": "~0.4.31",
     "js2php": "~0.0.14",
     "minimist": "^1.1.0"
